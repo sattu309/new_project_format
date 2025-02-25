@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Container(
         color: AppColors.primaryClr,
-        child: Center(child: Text("Add your project name",style: TextStyle(color: Colors.white),)),
+        child: Center(child: Text("VOLPES",style: Theme.of(context).textTheme.titleLarge?.copyWith(fontFamily: "serif",color: Colors.white,fontSize: 40))),
       ),
     );
   }
