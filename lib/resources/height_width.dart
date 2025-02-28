@@ -5,5 +5,5 @@ giveHeight(double size){
 }
 
 giveWidth(double size){
-  return SizedBox(height: size,);
+  return SizedBox(width: size,);
 }

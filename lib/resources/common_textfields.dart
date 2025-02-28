@@ -49,6 +49,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(fontSize: 13,color: Colors.black54.withOpacity(0.6)),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onTap: onTap,
       readOnly: readOnly!,
@@ -64,16 +65,17 @@ class CustomTextField extends StatelessWidget {
         LengthLimitingTextInputFormatter(length),
       ],
       decoration: InputDecoration(
+
           hintText: hint,
           focusColor: AppColors.primaryClr,
           hintStyle:
-          TextStyle(color: Colors.grey, fontSize: 16),
+          TextStyle(color: Colors.black54.withOpacity(0.6), fontSize: 13),
           filled: true,
           fillColor:  Color(0xffF6F6F6).withOpacity(.10),
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           focusedBorder: OutlineInputBorder(
-            borderSide:  BorderSide(color: Colors.grey.shade300,width: 1),
+            borderSide:  BorderSide(color: Colors.grey.shade300,),
             borderRadius: BorderRadius.circular(8),
           ),
           enabledBorder:  OutlineInputBorder(

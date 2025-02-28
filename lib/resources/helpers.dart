@@ -36,8 +36,7 @@ class NewHelpers{
   Future takeImgFromCamera( {ImageSource imageSource = ImageSource.gallery,
     int imageQuality = 50}) async {
     try{
-      final chooseImg = await ImagePicker()
-          .pickImage(source: imageSource, imageQuality: imageQuality);
+      final chooseImg = await ImagePicker().pickImage(source: imageSource, imageQuality: imageQuality);
       if(chooseImg == null){
         return null;
       }else{
@@ -46,6 +45,5 @@ class NewHelpers{
     }on PlatformException catch(e){
       throw Exception(e);
     }
-
   }
 }

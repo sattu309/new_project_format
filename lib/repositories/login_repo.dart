@@ -1,0 +1,103 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:http/http.dart' as http;
+
+import '../controllers/user_details_controller.dart';
+import '../models/otp_requested_model.dart';
+import '../models/verify_otp_model.dart';
+import '../resources/api_urls.dart';
+import '../resources/common_texts_style.dart';
+
+final userDetailsController = Get.put(UserDetailsController());
+Future<RequestOtpModel> createLogin(
+    {required String email,
+      required BuildContext context}) async {
+
+  var map = <String, dynamic>{};
+  map['email'] = email;
+  map['mailtype'] = "login";
+  log(map.toString());
+
+  final headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.acceptHeader: 'application/json',
+
+  };
+  print('REQUEST ::${jsonEncode(map)}');
+  http.Response response = await http.post(Uri.parse(ApiUrls.loginUrl),
+      body: jsonEncode(map), headers: headers);
+  log("response.body....      ${response.body}");
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    // showSnackBarView(context: context, msg: response.body.toString(), bgColor: Colors.white);
+    return RequestOtpModel.fromJson(json.decode(response.body));
+  } else {
+    final Map<String, dynamic> errorData = jsonDecode(response.body);
+    userDetailsController.errorText.value = errorData['error'];
+    // showSnackBarView(context: context, msg: errorData['error'], bgColor: Colors.white);
+    throw Exception(response.body);
+  }
+}
+
+
+Future<VerifyOtpModel> otpVerifyRepo(
+    {
+      required String email,
+      required String otp,
+      required BuildContext context}) async {
+  var map = <String, dynamic>{};
+  map['email'] = email;
+  map['mailtype'] = "login";
+  map['otpData'] = otp;
+  log(map.toString());
+
+  final headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.acceptHeader: 'application/json',
+  };
+  print('REQUEST ::${jsonEncode(map)}');
+  http.Response response = await http.post(Uri.parse(ApiUrls.verifyOtpUrl),
+      body: jsonEncode(map), headers: headers);
+  log("response.body....      ${response.body}");
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    return VerifyOtpModel.fromJson(json.decode(response.body));
+
+  } else {
+    final Map<String, dynamic> errorData = jsonDecode(response.body);
+    userDetailsController.errorText1.value = errorData['error'];
+    throw Exception(response.body);
+  }
+}
+
+
+// // resend otp
+// Future<BesterLoginModel> resendOtpRepo(
+//     {
+//       required String mobileNumber,
+//       required BuildContext context}) async {
+//   var map = <String, dynamic>{};
+//   map['mobile'] = mobileNumber;
+//   log(map.toString());
+//
+//   final headers = {
+//     HttpHeaders.contentTypeHeader: 'application/json',
+//     HttpHeaders.acceptHeader: 'application/json',
+//   };
+//   print('REQUEST ::${jsonEncode(map)}');
+//   // log(pref.getString('deviceId')!);
+//   http.Response response = await http.post(Uri.parse(ApiUrls.loginApi),
+//       body: jsonEncode(map), headers: headers);
+//   log("response.body....      ${response.body}");
+//   if (response.statusCode == 200 || response.statusCode == 400) {
+//     // Helpers.hideLoader(loader);
+//     return BesterLoginModel.fromJson(json.decode(response.body));
+//   } else {
+//     Helpers.createSnackBar(context, response.body.toString());
+//     // Helpers.hideLoader(loader);
+//     throw Exception(response.body);
+//   }
+// }
