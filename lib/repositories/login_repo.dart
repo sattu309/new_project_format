@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
+import 'package:volpes/models/common_model.dart';
 
 import '../controllers/user_details_controller.dart';
 import '../models/otp_requested_model.dart';
@@ -74,30 +75,33 @@ Future<VerifyOtpModel> otpVerifyRepo(
 }
 
 
-// // resend otp
-// Future<BesterLoginModel> resendOtpRepo(
-//     {
-//       required String mobileNumber,
-//       required BuildContext context}) async {
-//   var map = <String, dynamic>{};
-//   map['mobile'] = mobileNumber;
-//   log(map.toString());
-//
-//   final headers = {
-//     HttpHeaders.contentTypeHeader: 'application/json',
-//     HttpHeaders.acceptHeader: 'application/json',
-//   };
-//   print('REQUEST ::${jsonEncode(map)}');
-//   // log(pref.getString('deviceId')!);
-//   http.Response response = await http.post(Uri.parse(ApiUrls.loginApi),
-//       body: jsonEncode(map), headers: headers);
-//   log("response.body....      ${response.body}");
-//   if (response.statusCode == 200 || response.statusCode == 400) {
-//     // Helpers.hideLoader(loader);
-//     return BesterLoginModel.fromJson(json.decode(response.body));
-//   } else {
-//     Helpers.createSnackBar(context, response.body.toString());
-//     // Helpers.hideLoader(loader);
-//     throw Exception(response.body);
-//   }
-// }
+Future<CommonModel> updatePackageContent(
+    {
+      required String stockId,
+      required String salesPerson,
+      required String storeComment,
+      required String updateDate,
+      required BuildContext context}) async {
+  var map = <String, dynamic>{};
+  map['stock_id'] = stockId;
+  map['sales_person'] = salesPerson;
+  map['storecomment'] = storeComment;
+  map['updated_date'] = updateDate;
+  log(map.toString());
+
+  final headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.acceptHeader: 'application/json',
+    HttpHeaders.authorizationHeader: 'Bearer ${userDetailsController.userToken.value}',
+  };
+  print(headers);
+  print('REQUEST ::${jsonEncode(map)}');
+  http.Response response = await http.post(Uri.parse(ApiUrls.updatePackageUrl),
+      body: jsonEncode(map), headers: headers);
+  log("response.body....      ${response.body}");
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    return CommonModel.fromJson(json.decode(response.body));
+  } else {
+    throw Exception(response.body);
+  }
+}

@@ -1,6 +1,32 @@
 class ApiUrls{
-  static String baseUrl = "https://volpes.thehomeoflinen.net.za/api";
-  static String loginUrl = "${baseUrl}/sendotp";
+  static String baseUrl = "https://manage.volpes.co.za/api";
+  // static String baseUrl = "https://volpes.thehomeoflinen.net.za/api";
+  // static String loginUrl = "${baseUrl}/sendotp";
+  static String loginUrl = "${baseUrl}/sendotpapp";
   static String verifyOtpUrl = "${baseUrl}/verifyotp";
   static String dashBoardUrl = "${baseUrl}/getdashboarddata";
+  static String salesOrvView = "${baseUrl}/getsalesoverview";
+  static String tfgUrl = "${baseUrl}/gettfgdata";
+  static String salesPayMethodUrl = "${baseUrl}/getsalespaymethod";
+  static String saleByProductUrl = "${baseUrl}/getsalesproducts";
+  static String furnitureRugsUrl = "${baseUrl}/getfurniturerugs";
+  static String cifSubsriptionUrl = "${baseUrl}/getcifsubscriptions";
+  static String storeShopperUrl = "${baseUrl}/getstoreshoppers";
+  static String retailShopperUrl = "${baseUrl}/getretailshoppers";
+  static String ccShopperUrl = "${baseUrl}/getccshoppers";
+  static String ccSalesStoreUrl = "${baseUrl}/getccsalesstores";
+  static String storeShopperOverAllUrl = "${baseUrl}/gettopstore";
+  static String salesPersonListUrl = "${baseUrl}/gettopsalespeople";
+  static String retailShopper50Url = "${baseUrl}/gettopshoppers";
+  static String getQuizUserList = "${baseUrl}/getsalespeoples";
+  static String getStoreList = "${baseUrl}/getstorefeed";
+  static String getStoreDocumentsList = "${baseUrl}/getdocs";
+  static String adminMenuList = "${baseUrl}/getdoccats";
+  static String addStorePostUrl = "${baseUrl}/storestorefeed";
+  static String getStoreDiscountList = "${baseUrl}/getpromos";
+  static String leaderBoardList = "${baseUrl}/leaderboard";
+  static String testResultUrl = "${baseUrl}/prevresults";
+  static String getQuizQuestionUrl = "${baseUrl}/getquestions";
+  static String getReceivedList = "${baseUrl}/getpackages";
+  static String updatePackageUrl = "${baseUrl}/updatepackages";
 }

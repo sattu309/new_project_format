@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "453723918570",
+    "project_id": "store-zone-9ac2f",
+    "storage_bucket": "store-zone-9ac2f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453723918570:android:dc387cc6d4cc8e22b24793",
+        "android_client_info": {
+          "package_name": "com.storezone.storezoneapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkoG9_MuUHQKBQjMx7UxLViCd1d4O3CcE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

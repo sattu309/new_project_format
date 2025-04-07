@@ -20,8 +20,8 @@ class Repositories {
 
   static Future<VerifyOtpModel?> getLoginDetails() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    if (pref.getString("user_info") != null) {
-      return VerifyOtpModel.fromJson(jsonDecode(pref.getString('user_info')!));
+    if (pref.getString("user_details") != null) {
+      return VerifyOtpModel.fromJson(jsonDecode(pref.getString('user_details')!));
     }
     return null;
   }

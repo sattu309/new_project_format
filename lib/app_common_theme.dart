@@ -7,11 +7,11 @@ class AppTheme {
     return ThemeData(
       scaffoldBackgroundColor: Colors.white,
       useMaterial3: false,
-      fontFamily: "system-ui;",
+      fontFamily: "cabin",
       appBarTheme: const AppBarTheme(
           color: Colors.white,
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.red),
+          iconTheme: IconThemeData(color: Colors.white),
           titleTextStyle: TextStyle(color: Colors.black)),
       textTheme: TextTheme(
         bodyLarge: const TextStyle(color: Colors.black,fontSize: 18),

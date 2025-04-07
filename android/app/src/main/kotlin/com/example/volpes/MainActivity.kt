@@ -1,4 +1,4 @@
-package com.example.volpes
+package com.storezone.storezoneapp
 
 import io.flutter.embedding.android.FlutterActivity
 

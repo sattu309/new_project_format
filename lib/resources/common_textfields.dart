@@ -69,21 +69,21 @@ class CustomTextField extends StatelessWidget {
           hintText: hint,
           focusColor: AppColors.primaryClr,
           hintStyle:
-          TextStyle(color: Colors.black54.withOpacity(0.6), fontSize: 13),
+          TextStyle(color: Color(0xffE4E4E4), fontSize: 12,fontFamily: "cabin"),
           filled: true,
           fillColor:  Color(0xffF6F6F6).withOpacity(.10),
           contentPadding:
           const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           focusedBorder: OutlineInputBorder(
-            borderSide:  BorderSide(color: Colors.grey.shade300,),
+            borderSide:  BorderSide(color: Color(0xffE4E4E4),),
             borderRadius: BorderRadius.circular(8),
           ),
           enabledBorder:  OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade300),
+              borderSide: BorderSide(color: Color(0xffE4E4E4)),
               borderRadius: BorderRadius.all(Radius.circular(8))),
           border: OutlineInputBorder(
               borderSide:
-              BorderSide(color: Colors.grey.shade300, width: 3.0),
+              BorderSide(color: Color(0xffE4E4E4), width: 3.0),
               borderRadius: BorderRadius.circular(8)),
           suffixIcon: suffix,
           prefixIcon: prefix),

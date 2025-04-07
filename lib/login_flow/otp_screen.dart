@@ -6,9 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:volpes/customer_dashboard/admin_homepage.dart';
 import 'package:volpes/resources/height_width.dart';
 import '../Resources/app_colors.dart';
+import '../common_bottom_bar.dart';
 import '../customer_dashboard/customer_homepage.dart';
+import '../customer_dashboard/general_dashboard.dart';
 import '../repositories/login_repo.dart';
 import '../resources/common_button.dart';
 import '../resources/custom_loader.dart';
@@ -54,42 +57,35 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                "assets/images/screenbg.png",
+                "assets/images/new_splash.jpeg",
               ),
               fit: BoxFit.cover,
             ),
           ),
           child: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    giveHeight(height * .2),
-                    Center(
-                        child: Image.asset(
-                          "assets/images/app_logo.png",
-                          height: 100,
-                        )),
-                    giveHeight(30),
-                  ],
-                ),
+
+              Center(
+                child: isLoading
+                    ? threeArchedCircle(color: Colors.white, size: 30)
+                    : SizedBox(), // Keep height fixed when loader is hidden
               ),
               Positioned(
-                  bottom: height* .2,
-                  left: 20,
+                  bottom:0,
+                  // bottom: height* .2,
+                  // left: 20,
                   child: Container(
-                      width: width * .89,
+                      width: width,
+                      // width: width * .89,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(0),
                         boxShadow: const [
                           BoxShadow(
                             color: Colors.white,
@@ -111,16 +107,22 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                               const Text("Enter Verification Code",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
+                                      fontWeight: FontWeight.w500)),
                               giveHeight(5),
-                              Text("Otp has been sent to ${widget.email}",
+                              Text("Please enter OTP sent to",
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 13,
                                       color: Colors.black87,
                                       fontWeight: FontWeight.w400)),
+                              Text(widget.email,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500)),
                               giveHeight(3),
                               Obx((){
                                 return  Padding(
@@ -162,13 +164,13 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                                 pinTheme: PinTheme(
                                   fieldOuterPadding:
                                   const EdgeInsets.symmetric(horizontal: 5),
-                                  borderWidth: 1,
-                                  inactiveBorderWidth: 1,
-                                  activeBorderWidth: 1,
+                                  borderWidth: 0,
+                                  inactiveBorderWidth: 0,
+                                  activeBorderWidth: 0,
                                   shape: PinCodeFieldShape.box,
-                                  borderRadius: BorderRadius.circular(8),
-                                  fieldWidth: 30,
-                                  fieldHeight: 30,
+                                  borderRadius: BorderRadius.circular(0),
+                                  fieldWidth: 40,
+                                  fieldHeight: 40,
                                   activeFillColor: Colors.black,
                                   inactiveColor: Colors.black,
                                   inactiveFillColor: Colors.black,
@@ -214,15 +216,12 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                                         style: TextStyle(
                                             decoration: TextDecoration.underline,
                                             fontSize: 15,
-                                            color: AppColors.primaryClr,
+                                            color: Colors.red,
                                             fontWeight: FontWeight.w400));
                                   })
 
                               ),
                               giveHeight(18),
-                              isLoading == true ?
-                              Center(child: threeArchedCircle(color: AppColors.primaryClr, size: 30)):const SizedBox(),
-
                               CommonAppButton(
                                 title: 'CONFIRM OTP',
                                 onPressed: () async {
@@ -245,9 +244,15 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                                           "email": value.success!.email,
                                           "role": value.success!.role,
                                         });
-                                        await pref.setString("user_info", userInfo);
+                                        await pref.setString("user_details", userInfo);
                                         log("USER LOGIN DETAILS ::: $userInfo");
-                                        Get.offAll(()=>CustomerHomepage());
+                                        if (value.success!.role == "store") {
+                                          Get.offAll(() => CustomNavigationBar());
+                                        } else if (value.success!.role == "admin") {
+                                          Get.offAll(() => AdminHomepage());
+                                        } else {
+                                          Get.offAll(() => GeneralDashboard());
+                                        }
                                       }
                                     }).catchError((e){
                                       setState(() {
@@ -255,10 +260,7 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                                       });
                                     });
                                   }
-
-
-
-                                },
+                                  }, isArrow: false,
                               ),
                               giveHeight(height * .05),
                             ],

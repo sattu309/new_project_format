@@ -18,17 +18,17 @@ class DashboradModel {
 }
 
 class Success {
-  String? yearstartdate;
-  String? monthstartdate;
+  dynamic yearstartdate;
+  dynamic monthstartdate;
   Todaystoreorder? todaystoreorder;
   Todayretailorder? todayretailorder;
   Todaystoreorder? todaycollectstoreorder;
-  String? avgordval;
+  dynamic avgordval;
   Todayretailorder? mtdallorders;
   Todayretailorder? ytdallorders;
   Todaystoreorder? yesterdayretailsales;
-  double? salestarget;
-  String? salestargetcol;
+  dynamic salestarget;
+  dynamic salestargetcol;
 
   Success(
       {this.yearstartdate,
@@ -63,7 +63,7 @@ class Success {
         ? new Todayretailorder.fromJson(json['ytdallorders'])
         : null;
     yesterdayretailsales = json['yesterdayretailsales'] != null
-        ? new Todaystoreorder.fromJson(json['yesterdayretailsales'])
+        ? Todaystoreorder.fromJson(json['yesterdayretailsales'])
         : null;
     salestarget = json['salestarget'];
     salestargetcol = json['salestargetcol'];
@@ -100,7 +100,7 @@ class Success {
 
 class Todaystoreorder {
    dynamic sumsubtotal;
-  int? cnt;
+  dynamic cnt;
 
   Todaystoreorder({this.sumsubtotal, this.cnt});
 
@@ -118,8 +118,8 @@ class Todaystoreorder {
 }
 
 class Todayretailorder {
-  String? sumsubtotal;
-  int? cnt;
+  dynamic sumsubtotal;
+  dynamic cnt;
 
   Todayretailorder({this.sumsubtotal, this.cnt});
 

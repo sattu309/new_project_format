@@ -32,55 +32,67 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    var screenHeight = MediaQuery.of(context).size.height;
+
 
     var customHeight = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return
       Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
       body:
       Stack(
         children: [
+
           Container(
-            width: double.infinity,
-            height: double.infinity,
+            width: screenWidth,
+            height: screenHeight,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/screenbg.png"),
+                image: AssetImage("assets/images/new_splash.jpeg"),
                 fit: BoxFit.cover, // Ensures the image covers the whole container
               ),
             ),
           ),
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            // color: Colors.black.withOpacity(0.5),
-            color: AppColors.primaryClr.withOpacity(0.7),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                giveHeight(customHeight * .20),
-                Center(
-                    child: Image.asset(
-                      "assets/images/app_logo.png",
-                      height: 100,
-                    )),
-                giveHeight(30),
-              ],
-            ),
+          // Container(
+          //   width: double.infinity,
+          //   height: double.infinity,
+          //   // color: Colors.black.withOpacity(0.5),
+          //   color: AppColors.primaryClr.withOpacity(0.10),
+          // ),
+          // Padding(
+          //   padding: const EdgeInsets.all(12.0),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       giveHeight(customHeight * .20),
+          //       Center(
+          //           child: Image.asset(
+          //             "assets/images/app_logo.png",
+          //             height: 100,
+          //           )),
+          //       giveHeight(30),
+          //     ],
+          //   ),
+          // ),
+          Center(
+            child: isLoading
+                ? threeArchedCircle(color: Colors.white, size: 30)
+                : SizedBox(), // Keep height fixed when loader is hidden
           ),
           Positioned(
-            bottom: customHeight* .25,
-            left: 20,
-            right: 20,
+            bottom: 0,
+            // bottom: customHeight* .27,
+            left: 0,
+            right: 0,
             child: Container(
-              width: width * .80,
+              padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
+              width: width,
+              // width: width * .80,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+                borderRadius: BorderRadius.circular(0),
                 // borderRadius: BorderRadius.circular(10),
                 boxShadow: const [
                   BoxShadow(
@@ -99,6 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                     // Text(screenHeight.toString(),style: userText,),
+                      //Text(screenWidth.toString(),style: userText),
                       Text("Welcome back! Please login to continue",style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14),),
                       Obx((){
                         return  Padding(
@@ -111,7 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(fontSize: 14, color: Colors.red,  fontWeight: FontWeight.w400)),
                         );
                       }),
-                        giveHeight(6),
+                      userDetailsController.errorText.value != "" ?
+                        giveHeight(6):SizedBox(),
                       CustomTextField(
                         controller: emailController,
                         keyboardType: TextInputType.emailAddress,
@@ -124,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       giveHeight(20),
 
-                      CommonAppButton(title: "Login",onPressed: (){
+                      CommonAppButton(title: "SIGN IN",onPressed: (){
                         if(forKey.currentState!.validate()){
                           setState(() {
                             isLoading = true;
@@ -145,9 +161,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           });
                         }
-                        },),
-                      isLoading == true ?
-                      Center(child: threeArchedCircle(color: AppColors.primaryClr, size: 30)):const SizedBox()
+
+                        }, isArrow: true,),
+
 
                     ],
                   ),

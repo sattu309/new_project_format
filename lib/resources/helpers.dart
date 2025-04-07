@@ -7,7 +7,7 @@ class NewHelpers{
   //for single file selection from gallery
   Future addFilePicker() async {
     try{
-      final selectedFile = await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ['jpg','jpeg','png']);
+      final selectedFile = await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ['jpg','jpeg','png','mp4', 'mov', 'avi', 'mkv']);
       if(selectedFile == null){
         return null;
       }else{
@@ -33,7 +33,7 @@ class NewHelpers{
   }
 
   // for image take from camera
-  Future takeImgFromCamera( {ImageSource imageSource = ImageSource.gallery,
+  Future takeImgFromCamera( {ImageSource imageSource = ImageSource.camera,
     int imageQuality = 50}) async {
     try{
       final chooseImg = await ImagePicker().pickImage(source: imageSource, imageQuality: imageQuality);

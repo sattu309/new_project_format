@@ -9,11 +9,12 @@ class UserDetailsController extends GetxController{
   RxString errorText="".obs;
   RxString errorText1="".obs;
   var userId = "".obs;
+  var userName = "".obs;
   var userRoles = "".obs;
   var userToken = "".obs;
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? userInfo = preferences.getString("user_info");
+    String? userInfo = preferences.getString("user_details");
     log("LOCAL USER DATA ${userInfo}");
 
     if (userInfo == null) {
@@ -26,6 +27,7 @@ class UserDetailsController extends GetxController{
     userId.value = userDetailsModel.id.toString();
     userRoles.value = userDetailsModel.role.toString();
     userToken.value = userDetailsModel.token.toString();
+    userName.value = userDetailsModel.name.toString();
     log("USER ID ${userId.value.toString()}");
     log("USER ROLES ${userRoles.value.toString()}");
     log("userToken ID ${userToken.value.toString()}");

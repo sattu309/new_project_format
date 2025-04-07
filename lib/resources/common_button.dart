@@ -2,12 +2,14 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:volpes/Resources/app_colors.dart';
+import 'package:volpes/resources/height_width.dart';
 
 class CommonAppButton extends StatelessWidget {
   final String title;
   final VoidCallback? onPressed;
+  final bool isArrow;
 
-  const CommonAppButton({Key? key, required this.title, required this.onPressed,})
+  const CommonAppButton({Key? key, required this.title, required this.onPressed,  required this.isArrow,})
       : super(key: key);
 
   @override
@@ -18,7 +20,7 @@ class CommonAppButton extends StatelessWidget {
         height: 45,
         width: double.infinity,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
             color: AppColors.primaryClr
         ),
         child:
@@ -30,7 +32,7 @@ class CommonAppButton extends StatelessWidget {
               // backgroundColor: Colors.red,
               elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20), // <-- Radius
+                borderRadius: BorderRadius.circular(10), // <-- Radius
               ),
             ),
             child: Row(
@@ -38,12 +40,13 @@ class CommonAppButton extends StatelessWidget {
               children: [
                 Text(title,
                     style: const TextStyle(
-                        fontFamily: "serif",
-                        fontWeight: FontWeight.w500,
+                        fontFamily: "cabin",
+                        fontWeight: FontWeight.w400,
                         color: Colors.white,
                         letterSpacing: .2,
-                        fontSize: 15)),
-                Icon(Icons.arrow_right_outlined)
+                        fontSize: 14)),
+                giveWidth(5),
+                isArrow ?  ImageIcon((AssetImage("assets/images/arrow.png")),size: 17,) : SizedBox()
               ],
             )),
       );
