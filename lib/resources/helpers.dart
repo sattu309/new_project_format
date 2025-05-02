@@ -17,6 +17,31 @@ class NewHelpers{
       throw Exception(e);
     }
   }
+  Future<Map<String, dynamic>?> addFilePickerVedio() async {
+    try {
+      final selectedFile = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png', 'mp4', 'mov', 'avi', 'mkv'],
+      );
+
+      if (selectedFile == null) return null;
+
+      final file = File(selectedFile.files.first.path!);
+      final ext = file.path.split('.').last.toLowerCase();
+
+      // Determine the type (image/video) based on extension
+      final isImage = ['jpg', 'jpeg', 'png'].contains(ext);
+      final isVideo = ['mp4', 'mov', 'avi', 'mkv'].contains(ext);
+
+      return {
+        'file': file,
+        'type': isImage ? 'image' : isVideo ? 'video' : 'unknown',
+      };
+    } on PlatformException catch (e) {
+      throw Exception("File Picker Error: $e");
+    }
+  }
+
 
   // for multiple file select from the gallery
   Future<List<File>?> addFilePickerList() async {

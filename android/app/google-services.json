@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "453723918570",
-    "project_id": "store-zone-9ac2f",
-    "storage_bucket": "store-zone-9ac2f.firebasestorage.app"
+    "project_number": "582440696387",
+    "project_id": "volpesweb",
+    "storage_bucket": "volpesweb.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:453723918570:android:dc387cc6d4cc8e22b24793",
+        "mobilesdk_app_id": "1:582440696387:android:06d1e1f21a2b756cd5b2f6",
         "android_client_info": {
           "package_name": "com.storezone.storezoneapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "582440696387-qvv2aoueqrllkdr9vc7denvotm3ntam4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAkoG9_MuUHQKBQjMx7UxLViCd1d4O3CcE"
+          "current_key": "AIzaSyAov0YN4cys84-jNaUJv5LEJec1YE0E2-Y"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582440696387-qvv2aoueqrllkdr9vc7denvotm3ntam4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

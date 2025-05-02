@@ -59,6 +59,7 @@ Future<CommonModel> addStorePostRepo({
 }
 
 // for image and video too
+
 Future<CommonModel> vmSectionUploadRepo({
   required Map<String, String> mapData,
   required String fieldName1,
@@ -68,44 +69,35 @@ Future<CommonModel> vmSectionUploadRepo({
   final token = userDetailsController.userToken.value;
   log("Token being sent: $token");
 
-  var request = http.MultipartRequest('POST', Uri.parse(ApiUrls.addStorePostUrl));
+  var request = http.MultipartRequest('POST', Uri.parse(ApiUrls.addVMFeedPost));
 
-  final headers = {
+  request.headers.addAll({
     HttpHeaders.acceptHeader: 'application/json',
-    HttpHeaders.authorizationHeader: 'Bearer $token',
-  };
+    HttpHeaders.authorizationHeader: 'Bearer $token'
+  });
 
-  request.headers.addAll(headers);
   request.fields.addAll(mapData);
-
-  final fileExtension = file1.path.split('.').last.toLowerCase();
-
+  log("HEYY ${request.fields.toString()}");
+  log("HEYY 1 $fieldName1");
+  log("HEYY 2 $file1");
   if (file1.path.isNotEmpty) {
-    if (['jpg', 'jpeg', 'png'].contains(fileExtension)) {
-      // Image file as base64
-      String base64Image = base64Encode(await file1.readAsBytes());
-      String mimeType = fileExtension;
-      String finalBase64String = "data:image/$mimeType;base64,$base64Image";
-      request.fields[fieldName1] = finalBase64String;
-    } else if (['mp4', 'mov', 'avi', 'mkv'].contains(fileExtension)) {
-      // Video file as multipart
-      request.files.add(await http.MultipartFile.fromPath(fieldName1, file1.path));
-    } else {
-      throw Exception("Unsupported file type: $fileExtension");
-    }
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        fieldName1,
+        file1.path,
+      ),
+    );
   }
 
-  log("Request fields: ${request.fields}");
-  log("Request files: ${request.files.map((e) => e.filename).toList()}");
-
   final response = await request.send();
-  final responseString = await response.stream.bytesToString();
+  String responseString = await response.stream.bytesToString();
 
   log("Response Status Code: ${response.statusCode}");
   log("Response Body: $responseString");
 
   return CommonModel.fromJson(jsonDecode(responseString));
 }
+
 
 
 Future<http.MultipartFile> multipartFile(String? fieldName1, File file1) async {

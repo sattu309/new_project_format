@@ -12,8 +12,8 @@ import '../controllers/user_details_controller.dart';
 import '../models/dashboard_model.dart';
 import '../resources/common_texts_style.dart';
 
+
 class AdminHomepage extends StatefulWidget {
-  // static var homePageRout = "/homePage";
   const AdminHomepage({super.key});
 
   @override
@@ -25,14 +25,13 @@ class _AdminHomepageState extends State<AdminHomepage> {
   Repositories repositories = Repositories();
   DashboradModel? dashboradModel;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-  // DateTime? dateTime;
   getDashboardData(){
     repositories.getApi(url: ApiUrls.dashBoardUrl).then((value){
       dashboradModel = DashboradModel.fromJson(jsonDecode(value));
-      // dateTime = DateTime.parse(dashboradModel!.success!.yearstartdate.toString());
       setState(() {});
     });
   }
+
   showAlertBox() {
     return showDialog(
         context: context,
@@ -99,13 +98,11 @@ class _AdminHomepageState extends State<AdminHomepage> {
     super.initState();
     userDetailsController.getUserDetails();
     getDashboardData();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    // String formattedDate = DateFormat("dd MMMM yyyy").format(dateTime);
     return Scaffold(
       key: scaffoldKey,
       drawer: UserDrawer(),
@@ -122,6 +119,7 @@ class _AdminHomepageState extends State<AdminHomepage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                giveHeight(7),
                 RichText(
                     text: TextSpan(children: [
                       TextSpan(
@@ -129,10 +127,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall
-                              ?.copyWith(fontWeight: FontWeight.w700)),
+                              ?.copyWith(fontWeight: FontWeight.w700,fontSize: 15)),
                       TextSpan(
                           text: "(EX. VAT)",
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10)),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12)),
                     ])),
                 giveHeight(12),
                 Row(
@@ -143,14 +141,14 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "TOTAL SALES",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
                           Text(
                               formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
                                   (double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
                                   (double.tryParse(dashboradModel!.success!.todaycollectstoreorder!.sumsubtotal?.toString() ?? "0") ?? 0))
-                              ),style: userText
+                              ),style: userText.copyWith(fontSize: 14)
                           )
                         ],
                       ),
@@ -159,9 +157,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("TOTAL ORDERS", style: textHeading),
+                          Text("TOTAL ORDERS", style: textHeading.copyWith(fontSize: 13)),
                           giveHeight(3),
-                          Text((dashboradModel!.success!.todaystoreorder!.cnt + dashboradModel!.success!.todayretailorder!.cnt + dashboradModel!.success!.todaycollectstoreorder!.cnt).toString(), style: userText),
+                          Text((dashboradModel!.success!.todaystoreorder!.cnt + dashboradModel!.success!.todayretailorder!.cnt + dashboradModel!.success!.todaycollectstoreorder!.cnt).toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -181,10 +179,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "TOTAL AVERAGE ORDER VALUE",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
-                          Text( formatter.format(double.tryParse(dashboradModel!.success!.avgordval.toString())), style: userText),
+                          Text( formatter.format(double.tryParse(dashboradModel!.success!.avgordval.toString())), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -204,11 +202,11 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "YEAR START FROM",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
                           Text(
-                              dashboradModel!.success!.yearstartdate.toString(), style: userText),
+                              dashboradModel!.success!.yearstartdate.toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -218,10 +216,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "MONTH START FROM",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
-                          Text(dashboradModel!.success!.monthstartdate.toString(), style: userText),
+                          Text(dashboradModel!.success!.monthstartdate.toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -241,10 +239,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "RETAIL SALES",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
-                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
+                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -253,9 +251,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              "RETAIL ORDERS", style: textHeading),
+                              "RETAIL ORDERS", style: textHeading.copyWith(fontSize: 13)),
                           giveHeight(3),
-                          Text(dashboradModel!.success!.todayretailorder!.cnt!.toString(), style: userText),
+                          Text(dashboradModel!.success!.todayretailorder!.cnt!.toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -276,10 +274,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "STORE SALES",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
-                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
+                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -288,9 +286,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              "STORE ORDERS", style: textHeading),
+                              "STORE ORDERS", style: textHeading.copyWith(fontSize: 13)),
                           giveHeight(3),
-                          Text(dashboradModel!.success!.todaystoreorder!.cnt!.toString(), style: userText),
+                          Text(dashboradModel!.success!.todaystoreorder!.cnt!.toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -310,10 +308,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "YESTERDAYS RETAILS",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
-                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.yesterdayretailsales!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
+                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.yesterdayretailsales!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -321,9 +319,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("YESTERDAYS ORDERS", style: textHeading),
+                          Text("YESTERDAYS ORDERS", style: textHeading.copyWith(fontSize: 13)),
                           giveHeight(3),
-                          Text(dashboradModel!.success!.yesterdayretailsales!.cnt!.toString(), style: userText),
+                          Text(dashboradModel!.success!.yesterdayretailsales!.cnt!.toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -343,10 +341,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "SALES (THIS MONTH)",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
-                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.mtdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
+                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.mtdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -355,9 +353,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("TOTAL ORDERS (CURRENT MONTH)",
-                              style: textHeading),
+                              style: textHeading.copyWith(fontSize: 13)),
                           giveHeight(3),
-                          Text(dashboradModel!.success!.mtdallorders!.cnt!.toString(), style: userText),
+                          Text(dashboradModel!.success!.mtdallorders!.cnt!.toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -377,10 +375,10 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "SALES (THIS YEAR)",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
-                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.ytdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
+                          Text(formatter.format(((double.tryParse(dashboradModel!.success!.ytdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -389,9 +387,9 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("ORDERS (THIS YEAR)",
-                              style: textHeading),
+                              style: textHeading.copyWith(fontSize: 13)),
                           giveHeight(3),
-                          Text(dashboradModel!.success!.ytdallorders!.cnt!.toString(), style: userText),
+                          Text(dashboradModel!.success!.ytdallorders!.cnt!.toString(), style: userText.copyWith(fontSize: 14)),
                         ],
                       ),
                     ),
@@ -411,11 +409,11 @@ class _AdminHomepageState extends State<AdminHomepage> {
                         children: [
                           Text(
                             "SALES TO TARGET",
-                            style: textHeading,
+                            style: textHeading.copyWith(fontSize: 13),
                           ),
                           giveHeight(3),
                           Text(formatter.format(double.tryParse(dashboradModel!.success!.salestarget!.toString())), style: userText.copyWith(
-    color: hexToColor(dashboradModel!.success!.salestargetcol),
+    color: hexToColor(dashboradModel!.success!.salestargetcol),fontSize: 14
     ),),
                         ],
                       ),

@@ -39,10 +39,11 @@ class NotificationService {
     });
 
     // When user taps notification when app is in background or terminated
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Notification tapped: ${message.data}');
-      // Navigate or handle based on payload
-    });
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print('Notification payload structure : ${message.notification.toString()}');
+    //   print('Notification tapped: ${message.data}');
+    //   // Navigate or handle based on payload
+    // });
 
     // Background message handler
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
@@ -76,46 +77,60 @@ class NotificationService {
     );
   }
 
-  Future<void> showNotificationWithPayLoad({
-    required String title,
-    required String body,
-    required String payload,
-  }) async {
-    AndroidNotificationDetails androidNotificationDetails =
-    const AndroidNotificationDetails(
-      "default_channel_id",
-      "Default Channel",
-      channelDescription: "Default notification channel",
-      priority: Priority.high,
+  // Future<void> showNotificationWithPayLoad({
+  //   required String title,
+  //   required String body,
+  //   required String payload,
+  // }) async {
+  //   AndroidNotificationDetails androidNotificationDetails =
+  //   const AndroidNotificationDetails(
+  //     "default_channel_id",
+  //     "Default Channel",
+  //     channelDescription: "Default notification channel",
+  //     priority: Priority.high,
+  //     importance: Importance.max,
+  //     playSound: true,
+  //   );
+  //
+  //   DarwinNotificationDetails iOSPlatformChannelSpecifics =
+  //   const DarwinNotificationDetails(
+  //     presentAlert: true,
+  //     presentSound: true,
+  //     presentBadge: true,
+  //   );
+  //
+  //   NotificationDetails notificationDetails = NotificationDetails(
+  //     android: androidNotificationDetails,
+  //     iOS: iOSPlatformChannelSpecifics,
+  //   );
+  //
+  //   await flutterLocalNotificationsPlugin.show(
+  //     DateTime.now().millisecondsSinceEpoch.remainder(100000),
+  //     title,
+  //     body,
+  //     notificationDetails,
+  //     payload: payload,
+  //   );
+  // }
+  Future<void> createNotificationChannel() async {
+    AndroidNotificationChannel channel =     const AndroidNotificationChannel(
+      'store_zone_id', // Replace with your channel ID
+      'Custom_channel', // Replace with your channel name
+      description: 'Custom Channel Description', // Replace with your channel description
       importance: Importance.max,
       playSound: true,
     );
 
-    DarwinNotificationDetails iOSPlatformChannelSpecifics =
-    const DarwinNotificationDetails(
-      presentAlert: true,
-      presentSound: true,
-      presentBadge: true,
-    );
-
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    await flutterLocalNotificationsPlugin.show(
-      DateTime.now().millisecondsSinceEpoch.remainder(100000),
-      title,
-      body,
-      notificationDetails,
-      payload: payload,
-    );
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
   }
 
   Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationDetails androidPlatformChannelSpecifics =
     const AndroidNotificationDetails(
-      'default_channel_id',
+      'store_zone_id',
       'Default Channel',
       channelDescription: 'Default channel for notifications',
       importance: Importance.max,

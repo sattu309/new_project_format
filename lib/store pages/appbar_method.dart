@@ -16,7 +16,7 @@ AppBar storeAppBar({required BuildContext context, required String title}) {
       title,
       style: Theme.of(context)
           .textTheme
-          .titleMedium
+          .titleSmall
           ?.copyWith(color: Colors.white),
     ),
     actions: [

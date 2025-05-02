@@ -1,6 +1,9 @@
 class ApiUrls{
+  // static String baseUrl = "https://8d74-106-219-71-140.ngrok-free.app/api";
+
   static String baseUrl = "https://manage.volpes.co.za/api";
   // static String baseUrl = "https://volpes.thehomeoflinen.net.za/api";
+  // static String baseUrl = "http://192.168.1.27/laranew/api";
   // static String loginUrl = "${baseUrl}/sendotp";
   static String loginUrl = "${baseUrl}/sendotpapp";
   static String verifyOtpUrl = "${baseUrl}/verifyotp";
@@ -10,7 +13,7 @@ class ApiUrls{
   static String salesPayMethodUrl = "${baseUrl}/getsalespaymethod";
   static String saleByProductUrl = "${baseUrl}/getsalesproducts";
   static String furnitureRugsUrl = "${baseUrl}/getfurniturerugs";
-  static String cifSubsriptionUrl = "${baseUrl}/getcifsubscriptions";
+  static String cifSubsriptionUrl = "$baseUrl/getcifsubscriptions";
   static String storeShopperUrl = "${baseUrl}/getstoreshoppers";
   static String retailShopperUrl = "${baseUrl}/getretailshoppers";
   static String ccShopperUrl = "${baseUrl}/getccshoppers";
@@ -29,4 +32,17 @@ class ApiUrls{
   static String getQuizQuestionUrl = "${baseUrl}/getquestions";
   static String getReceivedList = "${baseUrl}/getpackages";
   static String updatePackageUrl = "${baseUrl}/updatepackages";
+  static String sendFcmTokenUrl = "${baseUrl}/addfcmtotopicstore";
+  static String getNotificationList = "${baseUrl}/notifyliststore";
+  static String getNotificationDetail = "${baseUrl}/notifydetail";
+  static String getVmSectionListUrl = "${baseUrl}/getvmfeed";
+  static String addVMFeedPost = "${baseUrl}/storevmfeed";
+  static String feedbackFormUrl = "${baseUrl}/storefeedback";
+  static String saveQuizDataUrl = "${baseUrl}/savequizapp";
+  static String getQuizData = "${baseUrl}/getquizresult";
+  static String getTestReusltPdfLink = "${baseUrl}/quizresultpdf";
+  static String searchProductUrl = "${baseUrl}/searchproduct";
+  static String addToCartUrl = "${baseUrl}/addtocartapp";
+  static String getCartDataUrl = "${baseUrl}/getcartdata";
+  static String getCheckoutSettingUrl = "${baseUrl}/checkoutsettings";
 }

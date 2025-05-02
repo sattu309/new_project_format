@@ -9,7 +9,6 @@ import 'package:volpes/resources/common_texts_style.dart';
 import 'package:volpes/resources/custom_loader.dart';
 import 'package:volpes/store%20pages/plugin_demo_quiz.dart';
 import 'package:volpes/store%20pages/quiz_component/common_button.dart';
-import 'package:volpes/store%20pages/quiz_questions_page.dart';
 import 'package:volpes/store%20pages/test_result_page.dart';
 import '../models/admin_quiz_user_list.dart';
 import '../resources/height_width.dart';
@@ -23,6 +22,9 @@ class TakeQuizScreen extends StatefulWidget {
 }
 
 class _TakeQuizScreenState extends State<TakeQuizScreen> {
+  final GlobalKey<FormState> challengeKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> challengerKey = GlobalKey<FormState>();
+
   Map<String, String> challengerMap = {};
   Map<String, String> challengeMap = {};
  List<String> challengerList = [];
@@ -151,76 +153,106 @@ class _TakeQuizScreenState extends State<TakeQuizScreen> {
               //     ),
               //   ),
               // ),
-              CustomDropdown<String>(
-                decoration: CustomDropdownDecoration(
-                  closedBorder: Border.all(color: Colors.black26),
-                  closedBorderRadius: BorderRadius.circular(5),
-                  expandedBorder: Border.all(color: Colors.black26),
-                  expandedBorderRadius: BorderRadius.circular(5),
-                  expandedFillColor: Colors.white,
+              Form(
+                key: challengerKey,
+                child: CustomDropdown<String>(
+                  decoration: CustomDropdownDecoration(
+                    closedBorder: Border.all(color: Colors.black26),
+                    closedBorderRadius: BorderRadius.circular(5),
+                    expandedBorder: Border.all(color: Colors.black26),
+                    expandedBorderRadius: BorderRadius.circular(5),
+                    expandedFillColor: Colors.white,
 
-                  headerStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13),
-                  listItemStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13, fontWeight: FontWeight.w400,),
+                    headerStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13),
+                    listItemStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13, fontWeight: FontWeight.w400,),
 
-                  hintStyle: TextStyle(
-                    color: AppColors.primaryClr,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
+                    hintStyle: TextStyle(
+                      color: AppColors.primaryClr,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
+                  hintText: 'Select Challenger',
+                  items: challengerList,
+                  excludeSelected: false,
+                  onChanged: (value) {
+                    selectedChallengerID = challengerMap[value];
+                    log('Selected Challenger Name: $selectedChallengerID');
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select an challenger';
+                    }
+                    return null;
+                  },
                 ),
-                hintText: 'Select Challenger',
-                items: challengerList,
-                excludeSelected: false,
-                onChanged: (value) {
-                  selectedChallengerID = challengerMap[value];
-                  log('Selected Challenger Name: $selectedChallengerID');
-                },
               ),
               giveHeight(10),
-              CustomDropdown<String>(
-                decoration: CustomDropdownDecoration(
-                  closedBorder: Border.all(color: Colors.black26),
-                  closedBorderRadius: BorderRadius.circular(5),
-                  expandedBorder: Border.all(color: Colors.black26),
-                  expandedBorderRadius: BorderRadius.circular(5),
-                  expandedFillColor: Colors.white,
+              Form(
+                key: challengeKey,
+                child: CustomDropdown<String>(
+                  decoration: CustomDropdownDecoration(
+                    closedBorder: Border.all(color: Colors.black26),
+                    closedBorderRadius: BorderRadius.circular(5),
+                    expandedBorder: Border.all(color: Colors.black26),
+                    expandedBorderRadius: BorderRadius.circular(5),
+                    expandedFillColor: Colors.white,
 
-                  headerStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13),
-                  listItemStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13, fontWeight: FontWeight.w400,),
+                    headerStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13),
+                    listItemStyle: TextStyle(color: AppColors.primaryClr, fontSize: 13, fontWeight: FontWeight.w400,),
 
-                  hintStyle: TextStyle(
-                    color: AppColors.primaryClr,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w400,
+                    hintStyle: TextStyle(
+                      color: AppColors.primaryClr,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
+                  hintText: 'Select Challenge',
+                  items: challengesList,
+                  excludeSelected: false,
+                  onChanged: (value) {
+                    selectedChallengeID = challengeMap[value];
+                    String task = value.toString();
+                    log('Selected Challenge ID: $selectedChallengeID');
+                    log('Selected Challenge Name: $task');
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please select an challenge';
+                    }
+                    return null;
+                  },
                 ),
-                hintText: 'Select Challenge',
-                items: challengesList,
-                excludeSelected: false,
-                onChanged: (value) {
-                  selectedChallengeID = challengeMap[value];
-                  String task = value.toString();
-                  log('Selected Challenge ID: $selectedChallengeID');
-                  log('Selected Challenge Name: $task');
-                },
               ),
 
               giveHeight(15),
-              Text("RULES OF ENGAGEMENT",style: textHeading.copyWith(fontWeight: FontWeight.w500,fontSize: 15,color:AppColors.primaryClr),),
-              giveHeight(5),
-              Text("1. You must answer all the question in quiz.",style: textHeading.copyWith(fontWeight: FontWeight.w400,fontSize: 13,color:AppColors.primaryClr),),
-              giveHeight(3),
-              Text("2. The highest scoring person in store wins\n     a chocolate.",style: textHeading.copyWith(fontWeight: FontWeight.w400,fontSize: 13,color:AppColors.primaryClr),),
-              giveHeight(3),
-              Text("3. Don't forget to submit your quiz.",style: textHeading.copyWith(fontWeight: FontWeight.w400,fontSize: 13,color:AppColors.primaryClr),),
-              giveHeight(30),
-              Center(child: startQuiz(title: 'START CHALLENGE', onTapp: () {
+             Padding(
+               padding: const EdgeInsets.symmetric(horizontal: 5),
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Text("RULES OF ENGAGEMENT",style: textHeading.copyWith(fontWeight: FontWeight.w500,fontSize: 15,color:AppColors.primaryClr),),
+                   giveHeight(5),
+                   Text("1. You must answer all the question in quiz.",style: textHeading.copyWith(fontWeight: FontWeight.w400,fontSize: 13,color:AppColors.primaryClr),),
+                   giveHeight(4),
+                   Text("2. The highest scoring person in store wins\n     a chocolate.",style: textHeading.copyWith(fontWeight: FontWeight.w400,fontSize: 13,color:AppColors.primaryClr),),
+                   giveHeight(4),
+                   Text("3. Don't forget to submit your quiz.",style: textHeading.copyWith(fontWeight: FontWeight.w400,fontSize: 13,color:AppColors.primaryClr),),
 
-                Navigator.push(context,MaterialPageRoute(builder: (BuildContext){
-                  return DemoQuiz(challengerID: selectedChallengerID.toString(), challengeID: selectedChallengeID.toString());
-                //   QuizQuestionScreen(challengerID: selectedChallengerID.toString(), challengeID: selectedChallengeID.toString());
-                }));
-              }, context: context)
+                 ],
+               ),
+             ),
+             giveHeight(30),
+              Center(child: startQuiz(title: 'START CHALLENGE', onTapp: () {
+                if(challengerKey.currentState!.validate() && challengeKey.currentState!.validate()){
+                  Navigator.push(context,MaterialPageRoute(builder: (BuildContext){
+                    return DemoQuiz(challengerID: selectedChallengerID.toString(), challengeID: selectedChallengeID.toString());
+                    //   QuizQuestionScreen(challengerID: selectedChallengerID.toString(), challengeID: selectedChallengeID.toString());
+                  }));
+                }
+
+              },
+                  context: context)
               ),
             ],
           ),

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 
 
 
-const TextStyle appBarStyle = TextStyle(fontSize: 18,color: CupertinoColors.black);
+const TextStyle appBarStyle = TextStyle(fontSize: 18,color: CupertinoColors.black,fontFamily: "calbin");
 const TextStyle textHeading = TextStyle(fontSize: 10,color: CupertinoColors.systemGrey,fontWeight: FontWeight.w600,fontFamily: "calbin");
-const TextStyle userText = TextStyle(fontSize: 13,color: Color(0xff000000),fontWeight: FontWeight.w600);
+const TextStyle userText = TextStyle(fontSize: 13,color: Color(0xff000000),fontWeight: FontWeight.w600,fontFamily: "calbin");
 
 showSnackBarView({required BuildContext context,required String msg, required Color bgColor}){
   SnackBar snackBar = SnackBar(
-      content: Text(msg,style: TextStyle(color: Colors.red),),
+      content: Text(msg,style: userText.copyWith(color: Colors.white)),
       backgroundColor: bgColor,
       duration:  Duration(seconds: 3),
   );
@@ -24,6 +24,7 @@ class CustomTextField1 extends StatelessWidget {
   final Widget? suffix;
   final bool readOnly;
   final TextInputType keyboardType;
+  final String? Function(String?)? validator;
 
   const CustomTextField1({
     Key? key,
@@ -32,6 +33,7 @@ class CustomTextField1 extends StatelessWidget {
     this.suffix,
     this.readOnly = false,
     this.keyboardType = TextInputType.text,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -49,23 +51,24 @@ class CustomTextField1 extends StatelessWidget {
         controller: controller,
         readOnly: readOnly,
         keyboardType: keyboardType,
+        validator: validator,
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: Color(0xffE4E4E4), fontSize: 10,fontFamily: "cabin"),
+          hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 10,fontFamily: "cabin"),
           filled: true,
             fillColor:  Color(0xffF6F6F6).withOpacity(.10),
           contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(color: Colors.black26),
+            borderSide:  BorderSide(color: Colors.grey.shade400),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(color: Colors.black26),
+            borderSide:  BorderSide(color: Colors.grey.shade400),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5),
-            borderSide: const BorderSide(color: Colors.black26),
+            borderSide:  BorderSide(color: Colors.grey.shade400),
           ),
           suffixIcon: suffix,
         ),

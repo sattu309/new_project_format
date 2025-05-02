@@ -150,8 +150,8 @@ class _AddStorePostState extends State<AddStorePost> {
                                     file1: mainController.image.value
                                 ).then((value){
                                   if(value.success != null){
-                                    storeController.getData();
-                                    mainController.image.value = File("");
+                                    // storeController.getVmSectionList();
+                                    mainController.vmSectionImage.value = File("");
                                     Navigator.pop(context);
                                   }
                                 });
@@ -173,46 +173,8 @@ class _AddStorePostState extends State<AddStorePost> {
       ),
     );
   }
-  Future<String> convertImageToBase64(File file) async {
-    try {
-      if (!file.existsSync()) {
-        log("Error: File does not exist at ${file.path}");
-        return "";
-      }
 
-      List<int> imageBytes = await file.readAsBytes();
-      String base64Image = base64Encode(imageBytes);
-      String mimeType = file.path.endsWith(".png") ? "png" : "jpg";
-      String finalBase64String = "data:image/$mimeType;base64,$base64Image";
 
-     mainController.base64Value.value = File(finalBase64String);
-      log("Encoded Image testing: ${mainController.base64Value.value}");
-      return finalBase64String;
-    } catch (e) {
-      log("Error converting image: $e");
-      return "";
-    }
-  }
-  Future<File> convertBase64ToFile(String base64String, String fileName) async {
-    try {
-      // Extract only the Base64 part (remove `data:image/...;base64,`)
-      String base64Data = base64String.split(',').last;
-
-      // Decode the Base64 string into bytes
-      Uint8List bytes = base64Decode(base64Data);
-
-      // Get the temporary directory
-      Directory tempDir = await getTemporaryDirectory();
-      File file = File('${tempDir.path}/$fileName');
-
-      // Write bytes to file
-      await file.writeAsBytes(bytes);
-
-      return file;
-    } catch (e) {
-      throw Exception("Error converting Base64 to File: $e");
-    }
-  }
 
   showUploadWindow(context) {
     showDialog(
@@ -240,11 +202,8 @@ class _AddStorePostState extends State<AddStorePost> {
                                       NewHelpers().takeImgFromCamera().then((value){
                                         if(value != null){
                                           mainController.image.value = value;
-                                          // convertImageToBase64(File(mainController.image.value.path));
-                                            // convertBase64ToFile();
                                         }
                                         print("Camera: ${mainController.image.value}");
-                                       // print("Camera base64 : ${mainController.base64Value.value}");
                                         Navigator.pop(context);
 
                                       });

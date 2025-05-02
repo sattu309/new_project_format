@@ -10,7 +10,10 @@ import 'package:volpes/drawer_menu/admin%20menu%20files/sales_overview_page.dart
 import 'package:volpes/drawer_menu/admin%20menu%20files/sales_payment_method.dart';
 import 'package:volpes/drawer_menu/admin%20menu%20files/tfg_moeny_page.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/discount_page.dart';
+import 'package:volpes/drawer_menu/stores%20menu%20files/feedback_form.dart';
+import 'package:volpes/drawer_menu/stores%20menu%20files/notification_screen.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/package_content_page.dart';
+import 'package:volpes/drawer_menu/stores%20menu%20files/shop_screen.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/store_menus_list.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/stores_document_screen.dart';
 import 'package:volpes/resources/api_urls.dart';
@@ -21,7 +24,7 @@ import '../controllers/main_controller.dart';
 import '../controllers/user_details_controller.dart';
 import '../models/admin_menu_category_list.dart';
 import '../resources/methods.dart';
-import '../store pages/vm_section.dart';
+import 'stores menu files/vm_section.dart';
 import 'admin menu files/cc_furniture_rugs.dart';
 import 'admin menu files/cif_subscription_page.dart';
 import 'admin menu files/top_10_list/c&c_shoppers.dart';
@@ -153,13 +156,6 @@ class _UserDrawerState extends State<UserDrawer> {
                   height: 0,
                   color: Colors.grey,
                 ),
-                _drawerTile1(title: 'Discount', icon: Icons.discount, onTap: (){
-                  Get.to(()=>DiscountPage());
-                }),
-                const Divider(
-                  height: 0,
-                  color: Colors.grey,
-                ),
                 _drawerTile1(title: 'Take Quiz', icon: Icons.quiz, onTap: (){
                   Navigator.pop(context);
                   mainController.onItemTap(1);
@@ -168,7 +164,7 @@ class _UserDrawerState extends State<UserDrawer> {
                   height: 0,
                   color: Colors.grey,
                 ),
-                _drawerTile1(title: 'Documents', icon: Icons.quiz, onTap: (){
+                _drawerTile1(title: 'Product Knowledge', icon: Icons.quiz, onTap: (){
                     Get.to(()=>StoreMenusList());
                 }),
 
@@ -190,10 +186,32 @@ class _UserDrawerState extends State<UserDrawer> {
                   height: 0,
                   color: Colors.grey,
                 ),
+                _drawerTile1(title: 'Recommendations', icon: Icons.quiz, onTap: (){
+                  Get.to(()=>FeedbackForm());
+                }),
+                const Divider(
+                  height: 0,
+                  color: Colors.grey,
+                ),
+                _drawerTile1(title: 'Notifications', icon: Icons.add_alert, onTap: (){
+                  Navigator.pop(context);
+                  mainController.onItemTap(3);
+                }),
+                const Divider(
+                  height: 0,
+                  color: Colors.grey,
+                ),
 
-                _drawerTile1(title: 'Store Posts', icon: Icons.dynamic_feed_sharp, onTap: (){
+                _drawerTile1(title: '#LoveMyStore', icon: Icons.dynamic_feed_sharp, onTap: (){
                   Navigator.pop(context);
                   mainController.onItemTap(2);
+                }),
+                const Divider(
+                  height: 0,
+                  color: Colors.grey,
+                ),
+                _drawerTile1(title: 'Shop', icon: Icons.store, onTap: (){
+                  Get.to(()=>HomePage());
                 }),
                 const Divider(
                   height: 0,
@@ -202,6 +220,15 @@ class _UserDrawerState extends State<UserDrawer> {
                 _drawerTile1(title: 'Latest Catalogue', icon: Icons.new_releases_outlined, onTap: (){
                   Navigator.pop(context);
                   openPdf(pdfUrl: "https://joom.ag/9FMd");
+                }),
+                const Divider(
+                  height: 0,
+                  color: Colors.grey,
+                ),
+                _drawerTile1(title: 'Blog', icon: Icons.new_releases_outlined, onTap: (){
+                  Navigator.pop(context);
+
+                  openPdf(pdfUrl: "https://www.volpes.co.za/blog");
                 }),
                 const Divider(
                   height: 0,

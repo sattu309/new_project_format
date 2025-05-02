@@ -55,27 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          // Container(
-          //   width: double.infinity,
-          //   height: double.infinity,
-          //   // color: Colors.black.withOpacity(0.5),
-          //   color: AppColors.primaryClr.withOpacity(0.10),
-          // ),
-          // Padding(
-          //   padding: const EdgeInsets.all(12.0),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.center,
-          //     children: [
-          //       giveHeight(customHeight * .20),
-          //       Center(
-          //           child: Image.asset(
-          //             "assets/images/app_logo.png",
-          //             height: 100,
-          //           )),
-          //       giveHeight(30),
-          //     ],
-          //   ),
-          // ),
+
           Center(
             child: isLoading
                 ? threeArchedCircle(color: Colors.white, size: 30)

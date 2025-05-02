@@ -44,6 +44,32 @@ Future<RequestOtpModel> createLogin(
   }
 }
 
+Future<CommonModel> sendFCMTokenRepo({
+  required String fcmToken,
+  required String token,
+
+}) async {
+  var map = <String, dynamic>{};
+  map['fcm'] = fcmToken;
+
+  log(map.toString());
+
+  final headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.acceptHeader: 'application/json',
+    HttpHeaders.authorizationHeader:'Bearer $token'
+  };
+  print('REQUEST ::${jsonEncode(map)}');
+  print('HEADER ::${jsonEncode(headers)}');
+  http.Response response = await http.post(Uri.parse(ApiUrls.sendFcmTokenUrl),
+      body: jsonEncode(map), headers: headers);
+  log("TOKEN response....      ${response.body}");
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    return CommonModel.fromJson(json.decode(response.body));
+  } else {
+    throw Exception(response.body);
+  }
+}
 
 Future<VerifyOtpModel> otpVerifyRepo(
     {
@@ -97,6 +123,35 @@ Future<CommonModel> updatePackageContent(
   print(headers);
   print('REQUEST ::${jsonEncode(map)}');
   http.Response response = await http.post(Uri.parse(ApiUrls.updatePackageUrl),
+      body: jsonEncode(map), headers: headers);
+  log("response.body....      ${response.body}");
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    return CommonModel.fromJson(json.decode(response.body));
+  } else {
+    throw Exception(response.body);
+  }
+}
+
+Future<CommonModel> feedbackFormRepo(
+    {
+      required String title,
+      required String feedback,
+
+      required BuildContext context}) async {
+  var map = <String, dynamic>{};
+  map['title'] = title;
+  map['feedback'] = feedback;
+
+  log(map.toString());
+
+  final headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.acceptHeader: 'application/json',
+    HttpHeaders.authorizationHeader: 'Bearer ${userDetailsController.userToken.value}',
+  };
+  print(headers);
+  print('REQUEST ::${jsonEncode(map)}');
+  http.Response response = await http.post(Uri.parse(ApiUrls.feedbackFormUrl),
       body: jsonEncode(map), headers: headers);
   log("response.body....      ${response.body}");
   if (response.statusCode == 200 || response.statusCode == 400) {

@@ -1,5 +1,5 @@
 class CommonModel {
-  String? success;
+  dynamic success;
 
   CommonModel({this.success});
 

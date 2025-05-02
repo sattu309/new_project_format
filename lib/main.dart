@@ -11,6 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   NotificationService().initializeNotification();
+  NotificationService().createNotificationChannel();
   NotificationService.initializeFirebaseMessaging();
   getFcm();
   runApp(const MyApp());

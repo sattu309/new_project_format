@@ -37,7 +37,7 @@ class _StoreDocumentsScreenState extends State<StoreDocumentsScreen> {
   void openPdf({required String pdfUrl}) async {
     Uri url = Uri.parse(pdfUrl);
     if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
+      await launchUrl(url, mode: LaunchMode.inAppBrowserView);
     } else {
       print("Could not launch $pdfUrl");
     }

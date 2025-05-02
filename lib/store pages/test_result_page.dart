@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:volpes/Resources/app_colors.dart';
 import 'package:volpes/drawer_menu/admin%20menu%20files/common_table_cell_method.dart';
 import 'package:volpes/resources/custom_loader.dart';
+import 'package:volpes/resources/methods.dart';
 import '../../../common_repository/common_api_method.dart';
 import '../../../resources/api_urls.dart';
 import '../../../resources/common_texts_style.dart';
 import '../../../resources/height_width.dart';
 import '../drawer_menu/admin menu files/common_appbar_drawer.dart';
 import '../models/test_result_model.dart';
+import '../repositories/testresult_getpdflink_repo.dart';
 
 class TestResultPage extends StatefulWidget {
   const TestResultPage({super.key});
@@ -92,6 +94,7 @@ class _TestResultPageState extends State<TestResultPage> {
                           final obtained = double.parse(tabData.markobtained.toString());
                           final total = double.parse(tabData.totalmarks.toString());
                           final markPercentage = (obtained / total) * 100;
+                          final viewPdf = tabData.pdflink.toString();
                           return
                             topStoreShopperTableData(
                                 salePerson: "${tabData.firstName.toString()} ${tabData.lastName.toString()}",
@@ -99,7 +102,7 @@ class _TestResultPageState extends State<TestResultPage> {
                                 challengeDate: tabData.startedOn.toString(),
                                 marks: "${tabData.markobtained.toString()}/${tabData.totalmarks.toString()}",
                                 percent: markPercentage.toStringAsFixed(2),
-                                viewResult: '',
+                                viewResult: viewPdf,
                                 index: index
                             );
 
@@ -144,7 +147,12 @@ class _TestResultPageState extends State<TestResultPage> {
           tableCell(marks , rowIndex: index),
           tableCell(percent , rowIndex: index),
           // tableCell(viewResult , rowIndex: index),
-          Icon(Icons.picture_as_pdf,color: Colors.red,size: 15,)
+          GestureDetector(
+              onTap: (){
+                print(viewResult);
+                getTestResultPdfLink(pdfId: viewResult, context: context);
+              },
+              child: Icon(Icons.picture_as_pdf,color: Colors.red,size: 15,))
 
         ]),
       ],

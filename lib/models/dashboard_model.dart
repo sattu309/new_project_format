@@ -29,6 +29,8 @@ class Success {
   Todaystoreorder? yesterdayretailsales;
   dynamic salestarget;
   dynamic salestargetcol;
+  dynamic todaycif;
+  dynamic monthcif;
 
   Success(
       {this.yearstartdate,
@@ -41,7 +43,10 @@ class Success {
         this.ytdallorders,
         this.yesterdayretailsales,
         this.salestarget,
-        this.salestargetcol});
+        this.salestargetcol,
+        this.todaycif,
+        this.monthcif
+      });
 
   Success.fromJson(Map<String, dynamic> json) {
     yearstartdate = json['yearstartdate'];
@@ -67,6 +72,8 @@ class Success {
         : null;
     salestarget = json['salestarget'];
     salestargetcol = json['salestargetcol'];
+    todaycif = json['todaycif'];
+    monthcif = json['monthcif'];
   }
 
   Map<String, dynamic> toJson() {
@@ -94,6 +101,8 @@ class Success {
     }
     data['salestarget'] = this.salestarget;
     data['salestargetcol'] = this.salestargetcol;
+    data['todaycif'] = this.todaycif;
+    data['monthcif'] = this.monthcif;
     return data;
   }
 }

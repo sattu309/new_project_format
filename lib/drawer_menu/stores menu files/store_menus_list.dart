@@ -55,7 +55,7 @@ class _StoreMenusListState extends State<StoreMenusList> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 10.0,
-                    mainAxisExtent: 115,
+                    mainAxisExtent: 140,
                     mainAxisSpacing: 10.0),
                 itemBuilder: (context, index) {
                   final data = getAdminMenuCategoryList!.success!.doccats![index];
@@ -107,7 +107,7 @@ class _StoreMenusListState extends State<StoreMenusList> {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: AppColors.titleClr,
-                                    fontSize: 9,
+                                    fontSize: 8,
                                     fontWeight: FontWeight.w400),
                               ),
                             )

@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:volpes/common_repository/common_api_method.dart';
-import 'package:volpes/drawer_menu/user_drawer.dart';
 import 'package:volpes/resources/api_urls.dart';
 import 'package:volpes/resources/app_colors.dart';
 import 'package:volpes/resources/custom_loader.dart';
 import 'package:volpes/resources/height_width.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import '../controllers/user_details_controller.dart';
 import '../models/dashboard_model.dart';
 import '../resources/common_texts_style.dart';
@@ -93,11 +93,17 @@ class _StoreHomepageState extends State<StoreHomepage> {
           );
         });
   }
+  late final WebViewController _instaFeedController;
   @override
   void initState() {
     super.initState();
     userDetailsController.getUserDetails();
     getDashboardData();
+    _instaFeedController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(
+        'https://cdn.lightwidget.com/widgets/e7c68283074c52eab0364d2b8c8dffe0.html',
+      ));
   }
 
   @override
@@ -105,6 +111,7 @@ class _StoreHomepageState extends State<StoreHomepage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.grey.shade50,
       body:
           dashboradModel != null ?
       SingleChildScrollView(
@@ -140,281 +147,124 @@ class _StoreHomepageState extends State<StoreHomepage> {
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10)),
                       ])),
                   giveHeight(12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: buildContainer(title: "CIF'S (TODAY)",
+                            data: dashboradModel!.success!.todaycif.toString(), icon: Icons.attach_money, width, clr: Colors.green),
+                      ),
+                     giveWidth(15),
+                      Expanded(
+                        child: buildContainer(title: "CIF'S (THIS MONTH)",
+                            data: dashboradModel!.success!.monthcif.toString(), icon: Icons.attach_money, width, clr: Colors.green),
+                      ),
+                    ],
+                  ),
+                  giveHeight(15),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   //   children: [
-                  //     buildContainer(title: "TOTAL SALES",data:  formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
-                  //         (double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)
-                  //     ), icon: Icons.attach_money, width, clr: Colors.green),
-                  //     buildContainer(title: "TOTAL ORDERS",
-                  //         data:  (dashboradModel!.success!.todaystoreorder!.cnt + dashboradModel!.success!.todayretailorder!.cnt).toString(), icon: Icons.list_alt_rounded, width, clr: Colors.green),
+                  //     Expanded(
+                  //       child: buildContainer(title: "TOTAL SALES",data:  formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
+                  //           (double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)
+                  //       ), icon: Icons.attach_money, width, clr: Colors.green),
+                  //     ),
+                  //    giveWidth(15),
+                  //     Expanded(
+                  //       child: buildContainer(title: "TOTAL ORDERS",
+                  //           data:  (dashboradModel!.success!.todaystoreorder!.cnt + dashboradModel!.success!.todayretailorder!.cnt).toString(), icon: Icons.list_alt_rounded, width, clr: Colors.green),
+                  //     ),
                   //   ],
                   // ),
-                  // giveHeight(7),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     buildContainer(title: "YEAR START FROM",data:
-                  //     dashboradModel!.success!.yearstartdate.toString(), icon: Icons.attach_money, width, clr: Colors.green),
-                  //     buildContainer(title: "MONTH START FROM",
-                  //         data:  dashboradModel!.success!.monthstartdate.toString(), icon: Icons.list_alt_rounded, width, clr: Colors.green),
-                  //   ],
-                  // ),
-                  // giveHeight(7),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     buildContainer(title:  "TOTAL AVERAGE ORDER VALUE",data:
-                  //     dashboradModel!.success!.avgordval != null ?
-                  //     formatter.format(double.tryParse(dashboradModel!.success!.avgordval.toString())):"R0.00", icon: Icons.attach_money, width, clr: Colors.green),
-                  //     // buildContainer(title: "TOTAL SALES",data:  formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
-                  //     //     (double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)
-                  //     // ), icon: Icons.attach_money, width, clr: Colors.green),
-                  //   ],
-                  // ),
-                  // giveHeight(7),
+                  // giveHeight(15),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "TOTAL SALES",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(
-                              formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
-                                  (double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)
-                              ),style: userText
-                            )
-                          ],
-                        ),
+                        child: buildContainer(title:  "STORE SALES",data:
+
+                        formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)),
+                            icon: Icons.store, width, clr: Colors.transparent),
                       ),
+                      giveWidth(15),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("TOTAL ORDERS", style: textHeading),
-                            giveHeight(3),
-                            Text((dashboradModel!.success!.todaystoreorder!.cnt + dashboradModel!.success!.todayretailorder!.cnt).toString(), style: userText),
-                          ],
-                        ),
+                        child: buildContainer(title:  "STORE ORDER",data:
+
+                        dashboradModel!.success!.todaystoreorder!.cnt!.toString(),
+                            icon: Icons.store, width, clr: Colors.transparent),
+                      ),
+
+                    ],
+                  ),
+                  giveHeight(15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: buildContainer(title:  "TOTAL ORDERS (CURRENT MONTH)",data:
+
+                        dashboradModel!.success!.mtdallorders!.cnt!.toString(),
+                            icon: Icons.store, width, clr: Colors.transparent),
+                      ),
+
+
+                      giveWidth(15),
+                      Expanded(
+                        child: buildContainer(title:  "TOTAL SALES (CURRENT MONTH)",data:
+
+                        formatter.format(((double.tryParse(dashboradModel!.success!.mtdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)),
+                            icon: Icons.store, width, clr: Colors.transparent),
+                      ),
+
+                    ],
+                  ),
+                  giveHeight(15),
+
+                  Text("TOP QUIZ MEMBER",style: Theme.of(context)
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w700)),
+                  giveHeight(5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: buildContainer(title: "TODAY",data: "DEVOPS", icon: Icons.attach_money, width, clr: Colors.green),
+                      ),
+                      giveWidth(15),
+                      Expanded(
+                        child: buildContainer(title: "THIS MONTH",data: "TESTER", icon: Icons.attach_money, width, clr: Colors.green),
                       ),
                     ],
                   ),
                   giveHeight(7),
-                  Divider(
-                    height: 5,
-                    color: Colors.black26,
+
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  Text(
+                    "#Volpes_sa",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(fontWeight: FontWeight.w600)
                   ),
-                  giveHeight(7),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "TOTAL AVERAGE ORDER VALUE",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(
-                                dashboradModel!.success!.avgordval != null ?
-                                formatter.format(double.tryParse(dashboradModel!.success!.avgordval.toString())):"R0.00", style: userText),
-                          ],
-                        ),
-                      ),
-                    ],
+                  giveHeight(4),
+                  SizedBox(
+                    height: 150,
+                    child: WebViewWidget(controller: _instaFeedController),
                   ),
-                  giveHeight(7),
-                  Divider(
-                    height: 5,
-                    color: Colors.black26,
-                  ),
-                  giveHeight(7),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "YEAR START FROM",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(
-                                dashboradModel!.success!.yearstartdate.toString(), style: userText),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "MONTH START FROM",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(dashboradModel!.success!.monthstartdate.toString(), style: userText),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  giveHeight(7),
-                  Divider(
-                    height: 5,
-                    color: Colors.black26,
-                  ),
-                  giveHeight(7),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "STORE SALES",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(
-                              formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                               "STORE ORDERS", style: textHeading),
-                            giveHeight(3),
-                            Text(
-                                dashboradModel!.success!.todaystoreorder!.cnt!.toString(), style: userText),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  giveHeight(7),
-                  Divider(
-                    height: 5,
-                    color: Colors.black26,
-                  ),
-                  giveHeight(7),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "C & C SALES",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(
-                                formatter.format(((double.tryParse(dashboradModel!.success!.todaycollectstoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("C & C ORDERS", style: textHeading),
-                            giveHeight(3),
-                            Text(dashboradModel!.success!.todaycollectstoreorder!.cnt!.toString(), style: userText),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  giveHeight(7),
-                  Divider(
-                    height: 5,
-                    color: Colors.black26,
-                  ),
-                  giveHeight(7),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "TOTAL SALES (CURRENT MONTH)",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(
-                                formatter.format(((double.tryParse(dashboradModel!.success!.mtdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("TOTAL ORDERS (CURRENT MONTH)",
-                                style: textHeading),
-                            giveHeight(3),
-                            Text(dashboradModel!.success!.mtdallorders!.cnt!.toString(), style: userText),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  giveHeight(7),
-                  Divider(
-                    height: 5,
-                    color: Colors.black26,
-                  ),
-                  giveHeight(7),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "TOTAL SALES (CURRENT YEAR)",
-                              style: textHeading,
-                            ),
-                            giveHeight(3),
-                            Text(
-                                formatter.format(((double.tryParse(dashboradModel!.success!.ytdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)), style: userText),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("TOTAL ORDERS (CURRENT YEAR)",
-                                style: textHeading),
-                            giveHeight(3),
-                            Text(dashboradModel!.success!.ytdallorders!.cnt!.toString(), style: userText),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  giveHeight(7),
-                  Divider(
-                    height: 5,
-                    color: Colors.black26,
-                  ),
-                  giveHeight(7),
                 ],
               ),
             )
+
           ],
         ),
       ):Center(child: threeArchedCircle(color: AppColors.primaryClr, size: 25)),
@@ -423,31 +273,39 @@ class _StoreHomepageState extends State<StoreHomepage> {
 
   Container buildContainer(double width, {required String title, required String data, required IconData icon,required Color? clr}) {
     return Container(
-                  padding:EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+
+                  padding:EdgeInsets.symmetric(horizontal: 10,vertical: 25),
                   decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                    transform: GradientRotation(90),
+                        colors: [
+                      Colors.white,
+                      Color(0xffadc9e4)
+                    ]),
                     color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade200),
-                    borderRadius: BorderRadius.circular(10)
+
+                    // border: Border.all(color: Colors.grey.shade200),
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: const Offset(0, -15),
+                        blurRadius: 20,
+                        color: const Color(0xFFDADADA).withOpacity(0.15),
+                      )
+                    ],
                   ),
+
                  width: width*.44,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 4,vertical: 3),
-                            decoration: BoxDecoration(
-                              color: clr,
-                            shape: BoxShape.circle
-                            ),
-                            child: Icon(icon,size: 15,),),
-                          Text(data,style: userText,),
-                        ],
-                      ),
-                      giveHeight(5),
-                      Text(title,style: textHeading,)
+                      Text(title,style: textHeading.copyWith(fontSize: 9),),
+                      giveHeight(2),
+                      Text(data,style: userText,),
+                      giveHeight(2),
+                      // Icon(icon,size: 15,color: AppColors.primaryClr,),
+
+
                     ],
                   ),
                 );
@@ -480,7 +338,6 @@ class _StoreHomepageState extends State<StoreHomepage> {
           padding: const EdgeInsets.all(12.0),
           child: InkWell(
               onTap: () {
-                print("hell");
                 showAlertBox();
               },
               child: ImageIcon(

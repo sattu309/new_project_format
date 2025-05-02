@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -225,6 +226,7 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                               CommonAppButton(
                                 title: 'CONFIRM OTP',
                                 onPressed: () async {
+                                  var fcm = await FirebaseMessaging.instance.getToken();
                                   if(forKey1.currentState!.validate()){
                                     setState(() {
                                       isLoading = true;
@@ -234,6 +236,7 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                                         isLoading = false;
                                       });
                                       if(value.success != null){
+
                                         SharedPreferences pref = await SharedPreferences.getInstance();
                                         String userInfo = jsonEncode({
                                           "token": value.success!.token,
@@ -246,6 +249,7 @@ class _VoplesOtpPageState extends State<VoplesOtpPage> {
                                         });
                                         await pref.setString("user_details", userInfo);
                                         log("USER LOGIN DETAILS ::: $userInfo");
+                                        sendFCMTokenRepo(fcmToken: fcm.toString(), token: value.success!.token);
                                         if (value.success!.role == "store") {
                                           Get.offAll(() => CustomNavigationBar());
                                         } else if (value.success!.role == "admin") {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -23,19 +24,11 @@ class StorePostScreen extends StatefulWidget {
 
 class _StorePostScreenState extends State<StorePostScreen> {
   final StoreController storeController = Get.put(StoreController());
-  // Repositories repository = Repositories();
-  // GetStoreListModel? getStoreListModel;
-  // Future<void> getStoresList()async {
-  //   repository.getApi(url: ApiUrls.getStoreList).then((value){
-  //     getStoreListModel = GetStoreListModel.fromJson(jsonDecode(value));
-  //     setState(() {});
-  //   });
-  // }
+
   @override
   void initState() {
     super.initState();
     storeController.getData();
-    // getStoresList();
   }
 
   @override
@@ -110,22 +103,33 @@ class _StorePostScreenState extends State<StorePostScreen> {
                       ),
                     ),
                     giveHeight(4),
-                    CachedNetworkImage(
-                      imageUrl: ImgUrl.toString(),
-                      fit: BoxFit.fitWidth,
-                      height: height * .20,
-                      width: width,
-                      errorWidget: (_, __, ___) => Image.asset(
-                        "assets/images/splash.png",
+                    GestureDetector(
+                      onTap: (){
+                        showImageViewer(
+                          context,
+                          Image.network(ImgUrl).image,
+                          useSafeArea: false,
+                          swipeDismissible: true,
+                          doubleTapZoomable: true,
+                        );
+                      },
+                      child: CachedNetworkImage(
+                        imageUrl: ImgUrl.toString(),
                         fit: BoxFit.fitWidth,
                         height: height * .20,
                         width: width,
-                      ),
-                      placeholder: (_, __) => Image.asset(
-                        "assets/images/splash.png",
-                        fit: BoxFit.fitWidth,
-                        height: height * .20,
-                        width: width,
+                        errorWidget: (_, __, ___) => Image.asset(
+                          "assets/images/placeHolder.png",
+                          fit: BoxFit.fitWidth,
+                          height: height * .20,
+                          width: width,
+                        ),
+                        placeholder: (_, __) => Image.asset(
+                          "assets/images/placeHolder.png",
+                          fit: BoxFit.fitWidth,
+                          height: height * .20,
+                          width: width,
+                        ),
                       ),
                     ),
                     giveHeight(6),
@@ -145,78 +149,6 @@ class _StorePostScreenState extends State<StorePostScreen> {
         );
 
       }),
-
-          // getStoreListModel != null ?
-          // RefreshIndicator(
-          //   onRefresh: () {
-          //     return getStoresList();
-          //   },
-          //   child:
-          //   ListView.builder(
-          //       itemCount: getStoreListModel!.success!.documents!.length,
-          //       itemBuilder: (BuildContext context, index){
-          //         final storeListData = getStoreListModel!.success!.documents![index];
-          //         final forMatedDate = DateFormat('dd MMM yyy').format(DateTime.parse(storeListData.createdAt.toString()));
-          //           final ImgUrl = "${getStoreListModel!.success!.documentlink}${storeListData.imagepath.toString()}";
-          //               print("STORE IMAGES ${ImgUrl.toString()}");
-          //         return Container(
-          //       height: height*.3,
-          //       padding: EdgeInsets.symmetric(horizontal: 10,vertical: 0),
-          //       margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          //       decoration: BoxDecoration(
-          //         color: Colors.white,
-          //         border: Border.all(color: Colors.grey.shade300),
-          //         borderRadius: BorderRadius.circular(5),
-          //         boxShadow: [
-          //           BoxShadow(
-          //             color: Colors.white,
-          //             blurRadius: 10,
-          //             offset: Offset(0, 5),
-          //           ),
-          //         ],
-          //       ),
-          //       child: Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: [
-          //           giveHeight(10),
-          //           Text(storeListData.title.toString().toUpperCase(),style: textHeading.copyWith(color: AppColors.primaryClr,fontWeight: FontWeight.w700),),
-          //           Text(storeListData.desciption.toString().toUpperCase(),style: textHeading.copyWith(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 8),),
-          //           giveHeight(2),
-          //           Text(forMatedDate,style: textHeading.copyWith(color: Colors.grey,fontWeight: FontWeight.w400,fontSize: 9),),
-          //           giveHeight(4),
-          //           CachedNetworkImage(
-          //             imageUrl: ImgUrl.toString(),
-          //               fit: BoxFit.fitWidth,
-          //               height: height * .20,
-          //               width: width,
-          //             errorWidget: (_, __, ___) =>
-          //                 Image.asset(
-          //                   "assets/images/splash.png",
-          //                   fit: BoxFit.fitWidth,
-          //                   height: height * .20,
-          //                   width: width,
-          //                 ),
-          //             placeholder: (_, __) => Image.asset(
-          //               "assets/images/splash.png",
-          //               fit: BoxFit.fitWidth,
-          //               height: height * .20,
-          //               width: width,
-          //             ),
-          //           ),
-          //           // Image.asset(
-          //           //   "assets/images/splash.png",
-          //           //   fit: BoxFit.fitWidth,
-          //           //   height: height * .20,
-          //           //   width: width,
-          //           // ),
-          //           giveHeight(6),
-          //           Text(storeListData.storename.toString(),style: textHeading.copyWith(color: Colors.grey,fontWeight:FontWeight.w500,fontSize: 9),),
-          //
-          //         ],
-          //       ),
-          //     );
-          //   }),
-          // ):Center(child: threeArchedCircle(color: AppColors.primaryClr, size: 25))
     );
   }
 }
