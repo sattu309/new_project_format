@@ -40,7 +40,7 @@ class CustomTextField1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 40,
+      // height: 40,
       child: TextFormField(
         style: TextStyle(
           fontSize: 12,

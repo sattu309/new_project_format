@@ -26,6 +26,7 @@ class CartController extends GetxController{
           cartTotal.value += product.amount ?? 0.0;
         }
         log("CART TOTAL ${cartTotal.toString()}");
+        log("CART ${cartModel.value.toString()}");
       });
     } catch (e) {
       print("Error fetching cart data: $e");

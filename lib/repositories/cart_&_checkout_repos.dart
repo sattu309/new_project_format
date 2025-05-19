@@ -26,7 +26,7 @@ Future<GetCartModel> getCartData() async {
   await http.post(Uri.parse(ApiUrls.getCartDataUrl), headers: headers,body: jsonEncode(map));
 
   if (response.statusCode == 200) {
-    print("CART DATA ${response.body}");
+    log("CART DATA ${response.body}");
     return GetCartModel.fromJson(json.decode(response.body));
   } else {
     throw Exception(response.body);

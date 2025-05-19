@@ -54,9 +54,7 @@ class _StorePostScreenState extends State<StorePostScreen> {
             itemBuilder: (BuildContext context, index) {
               final storeListData = storeController.model.value.success!.documents![index];
               final forMatedDate = DateFormat('dd MMM yyyy').format(DateTime.parse(storeListData.createdAt.toString()));
-              final ImgUrl = "${storeController.model.value.success!.documentlink!}${storeListData.imagepath.toString()}";
-
-              print("STORE IMAGES ${ImgUrl.toString()}");
+              final imgUrl = "${storeController.model.value.success!.documentlink!}${storeListData.imagepath.toString()}";
 
               return Container(
                 height: height * .3,
@@ -107,14 +105,14 @@ class _StorePostScreenState extends State<StorePostScreen> {
                       onTap: (){
                         showImageViewer(
                           context,
-                          Image.network(ImgUrl).image,
+                          Image.network(imgUrl).image,
                           useSafeArea: false,
                           swipeDismissible: true,
                           doubleTapZoomable: true,
                         );
                       },
                       child: CachedNetworkImage(
-                        imageUrl: ImgUrl.toString(),
+                        imageUrl: imgUrl.toString(),
                         fit: BoxFit.fitWidth,
                         height: height * .20,
                         width: width,

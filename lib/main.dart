@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:volpes/push_notification/notification_service.dart';
 import 'package:volpes/splash/splash_screen.dart';
-
 import 'app_common_theme.dart';
 
 void main() async {
@@ -22,10 +21,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+
       debugShowCheckedModeBanner: false,
       title: 'Volpes',
       theme: AppTheme.lightTheme(context),
       home: SplashScreen(),
+
     );
   }
 }
@@ -34,3 +35,4 @@ Future<void> getFcm() async {
   final fcm = await FirebaseMessaging.instance.getToken();
   print("FCM TOKKEN: ${fcm.toString()}");
 }
+// 127032571006

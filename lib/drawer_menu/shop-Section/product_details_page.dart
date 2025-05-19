@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -9,7 +8,6 @@ import 'package:volpes/drawer_menu/shop-Section/cart_page.dart';
 import 'package:volpes/models/product_detail_model.dart';
 import 'package:volpes/resources/common_texts_style.dart';
 import 'package:volpes/store%20pages/quiz_component/common_button.dart';
-
 import '../../Resources/app_colors.dart';
 import '../../repositories/save_quiz_repo.dart';
 import '../../resources/height_width.dart';
@@ -49,20 +47,18 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   void initState() {
     super.initState();
     productVariations = widget.productData.productVariation ?? [];
+    isOutOfStock = widget.productData.stockdetail == "outstockproduct";
     if (selectedVariation == null && productVariations.isNotEmpty) {
       selectedVariation = productVariations.firstWhere(
             (variation) => variation.varsku == widget.productData.productcode,
+
         orElse: () => productVariations[0],
       );
+      productInventory = selectedVariation!.inventory.toString();
     }
   }
   @override
   Widget build(BuildContext context) {
-    // selectedVariation ??= productVariations.firstWhere(
-    //       (variation) => variation.varsku == widget.productData.productcode,
-    //   orElse: () => productVariations.isNotEmpty ? productVariations[0] : null,
-    // );
-
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -185,6 +181,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               onChanged: (value) {
                 setState(() {
                   selectedVariation = value;
+                  productQty = 1;
                   variationPrice.value = selectedVariation!.price.toString();
                   variationSalePrice.value = selectedVariation!.saleprice.toString();
                   productVariantId = selectedVariation!.productvariantId.toString();
@@ -207,56 +204,62 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(color: Colors.grey.shade200)
                 ),
-                child: Row(
+                child: Column(
                   children: [
-                    CachedNetworkImage(
-                      alignment: Alignment.center,
-                      imageUrl: selectedItem.image.toString(),
-                      width: 40,
-                      height: 40,
-                      fit: BoxFit.cover,
-                      placeholder: (_, __) => SizedBox(width: 40, height: 40),
-                      errorWidget: (_, __, ___) => Icon(Icons.broken_image, size: 40),
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        RichText(text: TextSpan(
-                            children: [
-                              TextSpan(text: "${selectedItem.attributeterm!.termname.toString().toUpperCase()} ",style: userText.copyWith(fontSize: 10)),
-                              TextSpan(
-                                text: selectedItem.stockdetail == "instockproduct"
-                                    ? "INSTOCKPRODUCT"
-                                    : selectedItem.stockdetail == "outstockproduct"
-                                    ? "OUTOFSTOCK"
-                                    : "UNKNOWN",
-                                style: userText.copyWith(
-                                  fontSize: 10,
-                                  color: selectedItem.stockdetail == "instockproduct"
-                                      ? Colors.green
-                                      : selectedItem.stockdetail == "outstockproduct"
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              )
-                            ]
-                        )),
-                        Row(
-                          children: [
-                            Text("R${selectedItem.price}",style: userText.copyWith(fontSize: 10,decoration: TextDecoration.lineThrough,color: Colors.red)),
-                            giveWidth(5),
-                            if(selectedItem.saleprice != "0")
-                              Text("R${selectedItem.saleprice}",style: userText.copyWith(fontSize: 10,)),
-                          ],
+                        CachedNetworkImage(
+                          alignment: Alignment.center,
+                          imageUrl: selectedItem.image.toString(),
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => SizedBox(width: 40, height: 40),
+                          errorWidget: (_, __, ___) => Icon(Icons.broken_image, size: 40),
                         ),
-                        giveHeight(2),
-                        if(selectedItem.sizeline1 != "")
-                        Text(selectedItem.sizeline1.toString(), style: userText.copyWith(fontSize: 9)),
-                        Text("SKU: ${selectedItem.varsku.toString()}", style: userText.copyWith(fontSize: 10)),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(text: TextSpan(
+                                  children: [
+                                    TextSpan(text: "${selectedItem.attributeterm!.termname.toString().toUpperCase()} ",style: userText.copyWith(fontSize: 10)),
+                                    TextSpan(
+                                      text: selectedItem.stockdetail == "instockproduct"
+                                          ? "INSTOCKPRODUCT"
+                                          : selectedItem.stockdetail == "outstockproduct"
+                                          ? "OUTOFSTOCK"
+                                          : "UNKNOWN",
+                                      style: userText.copyWith(
+                                        fontSize: 10,
+                                        color: selectedItem.stockdetail == "instockproduct"
+                                            ? Colors.green
+                                            : selectedItem.stockdetail == "outstockproduct"
+                                            ? Colors.red
+                                            : Colors.grey,
+                                      ),
+                                    )
+                                  ]
+                              )),
+                              Row(
+                                children: [
+                                  Text("R${selectedItem.price}",style: userText.copyWith(fontSize: 10,decoration: TextDecoration.lineThrough,color: Colors.red)),
+                                  giveWidth(5),
+                                  if(selectedItem.saleprice != "0")
+                                    Text("R${selectedItem.saleprice}",style: userText.copyWith(fontSize: 10,)),
+                                ],
+                              ),
+                              giveHeight(2),
+                              if(selectedItem.sizeline1 != "")
+                              Text(selectedItem.sizeline1.toString(), style: userText.copyWith(fontSize: 9)),
+                              Text("SKU: ${selectedItem.varsku.toString()}", style: userText.copyWith(fontSize: 10)),
 
+                            ],
+                          ),
+                        )
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -274,55 +277,61 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.grey.shade200)
                     ),
-                    child: Row(
-                       children: [
-                        CachedNetworkImage(
-                          alignment: Alignment.center,
-                          imageUrl: imageUrl,
-                          width: 40,
-                          height: 40,
-                          fit: BoxFit.cover,
-                          placeholder: (_, __) => SizedBox(width: 40, height: 40),
-                          errorWidget: (_, __, ___) => Icon(Icons.broken_image, size: 40),
-                        ),
-                        SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            RichText(text: TextSpan(
-                                children: [
-                                  TextSpan(text: "${item.attributeterm!.termname.toString().toUpperCase()} ",style: userText.copyWith(fontSize: 10)),
-                                  TextSpan(
-                                    text: item.stockdetail == "instockproduct"
-                                        ? "INSTOCKPRODUCT"
-                                        : item.stockdetail == "outstockproduct"
-                                        ? "OUTOFSTOCK"
-                                        : "UNKNOWN",
-                                    style: userText.copyWith(
-                                      fontSize: 10,
-                                      color: item.stockdetail == "instockproduct"
-                                          ? Colors.green
-                                          : item.stockdetail == "outstockproduct"
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
-                                  )
-                                ]
-                            )),
-                            Row(
-                              children: [
-                                Text("R${item.price}",style: userText.copyWith(fontSize: 10,decoration: TextDecoration.lineThrough,color: Colors.red)),
-                               giveWidth(5),
-                                if(item.saleprice != "0")
-                                Text("R${item.saleprice}",style: userText.copyWith(fontSize: 10,)),
-                              ],
+                    child: Column(
+                      children: [
+                        Row(
+                           children: [
+                            CachedNetworkImage(
+                              alignment: Alignment.center,
+                              imageUrl: imageUrl,
+                              width: 40,
+                              height: 40,
+                              fit: BoxFit.cover,
+                              placeholder: (_, __) => SizedBox(width: 40, height: 40),
+                              errorWidget: (_, __, ___) => Icon(Icons.broken_image, size: 40),
                             ),
-                            if(item.sizeline1 != "")
-                            Text(item.sizeline1.toString(), style: userText.copyWith(fontSize: 9)),
-                            Text("SKU: ${item.varsku.toString()}", style: userText.copyWith(fontSize: 10)),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(text: TextSpan(
+                                      children: [
+                                        TextSpan(text: "${item.attributeterm!.termname.toString().toUpperCase()} ",style: userText.copyWith(fontSize: 10)),
+                                        TextSpan(
+                                          text: item.stockdetail == "instockproduct"
+                                              ? "INSTOCKPRODUCT"
+                                              : item.stockdetail == "outstockproduct"
+                                              ? "OUTOFSTOCK"
+                                              : "UNKNOWN",
+                                          style: userText.copyWith(
+                                            fontSize: 10,
+                                            color: item.stockdetail == "instockproduct"
+                                                ? Colors.green
+                                                : item.stockdetail == "outstockproduct"
+                                                ? Colors.red
+                                                : Colors.grey,
+                                          ),
+                                        )
+                                      ]
+                                  )),
+                                  Row(
+                                    children: [
+                                      Text("R${item.price}",style: userText.copyWith(fontSize: 10,decoration: TextDecoration.lineThrough,color: Colors.red)),
+                                     giveWidth(5),
+                                      if(item.saleprice != "0")
+                                      Text("R${item.saleprice}",style: userText.copyWith(fontSize: 10,)),
+                                    ],
+                                  ),
+                                  if(item.sizeline1 != "")
+                                  Text(item.sizeline1.toString(), style: userText.copyWith(fontSize: 9)),
+                                  Text("SKU: ${item.varsku.toString()}", style: userText.copyWith(fontSize: 10)),
 
+                                ],
+                              ),
+                            )
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -338,7 +347,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       bottomNavigationBar:
       isOutOfStock ? null:
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 50),
         child: Row(
 
           children: [
@@ -367,6 +376,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
                        if (maxInventory != null && productQty < maxInventory) {
                          increaseCount();
+                         log("HELLO ${maxInventory.toString()}");
                        } else {
                          showSnackBarView(
                            context: context,

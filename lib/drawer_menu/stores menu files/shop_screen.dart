@@ -72,39 +72,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }, isArrow: false),
-              // ElevatedButton(
-              //   child: const Text('Scan Barcode'),
-              //   onPressed: () async {
-              //     await Navigator.of(context).push(
-              //       MaterialPageRoute(
-              //         builder: (context) => AiBarcodeScanner(
-              //           onDispose: () {
-              //             debugPrint("Barcode scanner disposed!");
-              //           },
-              //           hideGalleryButton: false,
-              //           controller: MobileScannerController(
-              //             detectionSpeed: DetectionSpeed.noDuplicates,
-              //           ),
-              //           onDetect: (BarcodeCapture capture) async {
-              //             final String? scannedValue = capture.barcodes.first.rawValue;
-              //             debugPrint("Barcode scanned: $scannedValue");
-              //
-              //             if (scannedValue != null && scannedValue.isNotEmpty) {
-              //               await searchProductRepo( productCode: scannedValue,context: context).then((value){
-              //                 if(value.success != null){
-              //                   Get.offAll(()=>ProductDetailsPage());
-              //                 }
-              //               });
-              //             }
-              //           },
-              //           validator: (value) {
-              //             return value.barcodes.isNotEmpty;
-              //           },
-              //         ),
-              //       ),
-              //     );
-              //   },
-              // ),
 
             ],
           ),

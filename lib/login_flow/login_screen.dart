@@ -91,9 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
-                     // Text(screenHeight.toString(),style: userText,),
-                      //Text(screenWidth.toString(),style: userText),
                       Text("Welcome back! Please login to continue",style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14),),
                       Obx((){
                         return  Padding(

@@ -52,3 +52,52 @@ class CommonAppButton extends StatelessWidget {
       );
   }
 }
+class CommonAppButtonGreen extends StatelessWidget {
+  final String title;
+  final VoidCallback? onPressed;
+  final bool isArrow;
+  final Color color;
+
+  const CommonAppButtonGreen({Key? key, required this.title, required this.onPressed,  required this.isArrow, required this.color,})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return
+
+      Container(
+        height: 40,
+        width: double.infinity,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(7),
+            color: Colors.green
+        ),
+        child:
+        ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              // minimumSize: 79,
+              backgroundColor: color,
+              // backgroundColor: Colors.red,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10), // <-- Radius
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(title,
+                    style: const TextStyle(
+                        fontFamily: "cabin",
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                        letterSpacing: .2,
+                        fontSize: 14)),
+                giveWidth(5),
+                isArrow ?  ImageIcon((AssetImage("assets/images/arrow.png")),size: 17,) : SizedBox()
+              ],
+            )),
+      );
+  }
+}

@@ -65,6 +65,7 @@ dependencies:
   ulid: ^2.0.1
   intl_phone_field: ^3.2.0
   country_picker: ^2.0.20
+  flutter_bloc: ^9.1.1
 
 
 
