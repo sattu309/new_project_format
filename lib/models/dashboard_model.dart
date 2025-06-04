@@ -18,6 +18,8 @@ class DashboradModel {
 }
 
 class Success {
+  dynamic storesales;
+  dynamic storesalesyesterday;
   dynamic yearstartdate;
   dynamic monthstartdate;
   Todaystoreorder? todaystoreorder;
@@ -33,7 +35,10 @@ class Success {
   dynamic monthcif;
 
   Success(
-      {this.yearstartdate,
+      {
+        this.storesales,
+        this.storesalesyesterday,
+        this.yearstartdate,
         this.monthstartdate,
         this.todaystoreorder,
         this.todayretailorder,
@@ -49,23 +54,25 @@ class Success {
       });
 
   Success.fromJson(Map<String, dynamic> json) {
+    storesales = json['storesales'];
+    storesalesyesterday = json['storesalesyesterday'];
     yearstartdate = json['yearstartdate'];
     monthstartdate = json['monthstartdate'];
     todaystoreorder = json['todaystoreorder'] != null
-        ? new Todaystoreorder.fromJson(json['todaystoreorder'])
+        ? Todaystoreorder.fromJson(json['todaystoreorder'])
         : null;
     todayretailorder = json['todayretailorder'] != null
-        ? new Todayretailorder.fromJson(json['todayretailorder'])
+        ? Todayretailorder.fromJson(json['todayretailorder'])
         : null;
     todaycollectstoreorder = json['todaycollectstoreorder'] != null
-        ? new Todaystoreorder.fromJson(json['todaycollectstoreorder'])
+        ? Todaystoreorder.fromJson(json['todaycollectstoreorder'])
         : null;
     avgordval = json['avgordval'];
     mtdallorders = json['mtdallorders'] != null
-        ? new Todayretailorder.fromJson(json['mtdallorders'])
+        ? Todayretailorder.fromJson(json['mtdallorders'])
         : null;
     ytdallorders = json['ytdallorders'] != null
-        ? new Todayretailorder.fromJson(json['ytdallorders'])
+        ? Todayretailorder.fromJson(json['ytdallorders'])
         : null;
     yesterdayretailsales = json['yesterdayretailsales'] != null
         ? Todaystoreorder.fromJson(json['yesterdayretailsales'])
@@ -78,6 +85,8 @@ class Success {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['storesales'] = this.storesales;
+    data['storesalesyesterday'] = this.storesalesyesterday;
     data['yearstartdate'] = this.yearstartdate;
     data['monthstartdate'] = this.monthstartdate;
     if (this.todaystoreorder != null) {

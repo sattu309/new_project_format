@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:volpes/drawer_menu/admin%20menu%20files/common_appbar_drawer.dart';
+import 'package:volpes/drawer_menu/shop-Section/cart_page.dart';
 import 'package:volpes/resources/common_button.dart';
-import 'package:volpes/resources/common_texts_style.dart';
+import 'package:volpes/resources/height_width.dart';
 
+import '../../Resources/app_colors.dart';
 import '../../repositories/save_quiz_repo.dart';
+import '../shop-Section/category_list.dart';
 import '../shop-Section/product_details_page.dart';
 
 
@@ -26,7 +27,45 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customerAppBar(context, "Scanner"),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.primaryClr,
+        elevation: 1,
+        title: Row(
+          children: [
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Image.asset(
+                "assets/images/left-arrow.png",
+                height: 22,
+                width: 22,
+                color: Colors.white,
+              ),
+            ),
+            giveWidth(10),
+            Text(
+              'Scanner',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall
+                  ?.copyWith(color: Colors.white),
+            ),
+          ],
+        ),
+
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: InkWell(
+                onTap: (){
+                  Get.to(()=>CartPage());
+                },
+                child: ImageIcon(AssetImage("assets/images/cart.png"),size: 26,color: Colors.white,)),
+          )
+        ],
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -72,7 +111,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }, isArrow: false),
-
+              giveHeight(10),
+              CommonAppButton(title: "Shop by Category".toUpperCase(), onPressed: (){
+                Get.to(()=>CategoryList());
+              }, isArrow: false
+              )
             ],
           ),
         ),

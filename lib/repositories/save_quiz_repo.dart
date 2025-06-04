@@ -65,6 +65,32 @@ Future<ProductDetailModel> searchProductRepo({
     throw Exception(response.body);
   }
 }
+Future<ProductDetailModel> getProductDetails({
+  required String productId,
+  required BuildContext context}
+    ) async {
+
+  var map = <String, dynamic>{};
+  map['id'] = productId;
+  log(map.toString());
+  var token = userDetailsController.userToken.value;
+
+  final headers = {
+    HttpHeaders.contentTypeHeader: 'application/json',
+    HttpHeaders.acceptHeader: 'application/json',
+    HttpHeaders.authorizationHeader: 'Bearer $token'
+
+  };
+  log('REQUEST ::${jsonEncode(map)}');
+  http.Response response = await http.post(Uri.parse("${ApiUrls.searchProductUrl}"),
+      body: jsonEncode(map), headers: headers);
+  log("response.body....      ${response.body}");
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    return ProductDetailModel.fromJson(json.decode(response.body));
+  } else {
+    throw Exception(response.body);
+  }
+}
 
 Future<CommonModel> addToCartRepo({
   required String qty,

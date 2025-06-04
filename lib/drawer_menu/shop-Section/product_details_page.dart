@@ -26,6 +26,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   RxString variationSalePrice = "".obs;
   int productQty = 1;
   String productInventory = "";
+  String singleProductInventory = "";
   bool isOutOfStock = false;
 
   String productVariantId = "";
@@ -46,6 +47,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   void initState() {
     super.initState();
+    singleProductInventory = widget.productData.inventory.toString();
+    print("SINGLE PRODUCT INVENTORY ${singleProductInventory}");
     productVariations = widget.productData.productVariation ?? [];
     isOutOfStock = widget.productData.stockdetail == "outstockproduct";
     if (selectedVariation == null && productVariations.isNotEmpty) {
@@ -71,7 +74,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           children: [
             GestureDetector(
               onTap: (){
-                Get.back();
                 Get.back();
               },
               child: Image.asset(
@@ -129,9 +131,13 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             imageUrl: imgList,
                             errorWidget: (_, __, ___) =>
                             const SizedBox(),
-                            placeholder: (_, __) =>
-                            const SizedBox(),
-                            fit: BoxFit.cover,
+                            placeholder: (_, __) => Image.asset(
+                              "assets/images/placeHolder.png",
+                              fit: BoxFit.fitWidth,
+                              height: height * .20,
+                              width: width,
+                            ),
+                            fit: BoxFit.contain,
                           ),
                         ));
                       }
@@ -158,6 +164,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ],
             ),
            giveHeight(10),
+            if(productVariations.isNotEmpty)
             CustomDropdown<ProductVariation>(
               hintText: 'SELECT OPTION',
               items: productVariations,
@@ -286,7 +293,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               imageUrl: imageUrl,
                               width: 40,
                               height: 40,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                               placeholder: (_, __) => SizedBox(width: 40, height: 40),
                               errorWidget: (_, __, ___) => Icon(Icons.broken_image, size: 40),
                             ),
@@ -372,19 +379,28 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                  giveWidth(10),
                  GestureDetector(
                      onTap: (){
-                       final maxInventory = int.tryParse(productInventory ?? '');
+                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                       final int? variationInventory = int.tryParse(productInventory ?? '');
+                       final int? singleInventory = int.tryParse(singleProductInventory ?? '');
 
-                       if (maxInventory != null && productQty < maxInventory) {
-                         increaseCount();
-                         log("HELLO ${maxInventory.toString()}");
-                       } else {
+                       final int finalInventory = variationInventory ?? singleInventory ?? 0;
+
+                       if (finalInventory <= 0) {
                          showSnackBarView(
                            context: context,
-                           msg: "Reached max count",
-                           bgColor: Colors.red,
+                           msg: "Product is Out of stock",
+                           bgColor: Color(0xffd3000c),
+                         );
+                       }else if (productQty >= finalInventory) {
+                         showSnackBarView(
+                           context: context,
+                           msg: "Product count has reached the maximum limit",
+                           bgColor: Color(0xffd3000c),
                          );
                        }
-
+                       else{
+                         increaseCount();
+                       }
 
                      },
                    child: Container(
@@ -401,10 +417,19 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
            ),
             buttonCommon1(title: "ADD",
                 onTapp: (){
-              if(int.parse(productInventory) <= 0){
-                showSnackBarView(context: context, msg: "Product is Out of stock", bgColor: Colors.red);
-                print("OUT OF STOCK");
-              }else{
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  final int? variationInventory = int.tryParse(productInventory ?? '');
+                  final int? singleInventory = int.tryParse(singleProductInventory ?? '');
+
+                  final int finalInventory = variationInventory ?? singleInventory ?? 0;
+
+                  if (finalInventory <= 0) {
+                    showSnackBarView(
+                      context: context,
+                      msg: "Product is Out of stock",
+                      bgColor: Color(0xffd3000c),
+                    );
+                  }else{
                 addToCartRepo(
                     qty: productQty.toString(),
                     productVariantId: productVariantId,

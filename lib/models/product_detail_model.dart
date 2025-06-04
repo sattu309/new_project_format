@@ -19,13 +19,13 @@ class ProductDetailModel {
 }
 
 class Success {
-  int? showcollect;
+  dynamic showcollect;
   ProductData? productData;
   Stores? stores;
-  int? notforsale;
-  String? title;
-  String? variant;
-  String? description;
+  dynamic notforsale;
+  dynamic title;
+  dynamic variant;
+  dynamic description;
   List<MetaDetails>? metaDetails;
 
   Success(
@@ -81,35 +81,35 @@ class Success {
 class ProductData {
   List<ProductImages>? productImages;
   List<Breadcrumb>? breadcrumb;
-  String? badgetext;
-  String? badgetextbg;
-  String? badgetextcolor;
-  String? badge;
-  String? productname;
-  String? subTxt;
-  String? subTxtColor;
-  String? description;
-  String? subtext;
-  int? productId;
-  String? productcode;
+  dynamic badgetext;
+  dynamic badgetextbg;
+  dynamic badgetextcolor;
+  dynamic badge;
+  dynamic productname;
+  dynamic subTxt;
+  dynamic subTxtColor;
+  dynamic description;
+  dynamic subtext;
+  dynamic productId;
+  dynamic productcode;
   List<ProductVariation>? productVariation;
   List<Null>? singleproduct;
   List<VisitedProducts>? visitedProducts;
   // List<RecommendProducts>? recommendProducts;
-  String? sizeguidetitle;
-  String? sizeguide;
+  dynamic sizeguidetitle;
+  dynamic sizeguide;
   ShareButtons? shareButtons;
   List<AddInfoList>? addInfoList;
-  String? shortdesc;
-  String? actPrice;
-  String? dispPrice;
+  dynamic shortdesc;
+  dynamic actPrice;
+  dynamic dispPrice;
   List<int>? dispPriceArr;
-  String? slug;
-  int? inventory;
-  String? stockdetail;
-  String? tfgimage;
-  String? tfgtext;
-  String? categoryname;
+  dynamic slug;
+  dynamic inventory;
+  dynamic stockdetail;
+  dynamic tfgimage;
+  dynamic tfgtext;
+  dynamic categoryname;
 
   ProductData(
       {this.productImages,
@@ -312,20 +312,20 @@ class Breadcrumb {
 }
 
 class ProductVariation {
-  String? stockdetail;
-  String? title;
-  int? productId;
-  int? productvariantId;
-  int? inventory;
-  String? description;
-  String? varsku;
-  int? attributetermId;
+  dynamic stockdetail;
+  dynamic title;
+  dynamic productId;
+  dynamic productvariantId;
+  dynamic inventory;
+  dynamic description;
+  dynamic varsku;
+  dynamic attributetermId;
   Attributeterm? attributeterm;
-  String? size;
-  String? sizeline1;
-  String? image;
-  String? price;
-  String? saleprice;
+  dynamic size;
+  dynamic sizeline1;
+  dynamic image;
+  dynamic price;
+  dynamic saleprice;
 
   ProductVariation(
       {this.stockdetail,
@@ -385,12 +385,12 @@ class ProductVariation {
 }
 
 class Attributeterm {
-  int? id;
-  String? termname;
-  int? attributeId;
-  Null? deletedAt;
-  Null? createdAt;
-  Null? updatedAt;
+  dynamic id;
+  dynamic termname;
+  dynamic attributeId;
+  dynamic deletedAt;
+  dynamic createdAt;
+  dynamic updatedAt;
 
   Attributeterm(
       {this.id,

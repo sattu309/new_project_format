@@ -8,6 +8,7 @@ import 'package:volpes/resources/app_colors.dart';
 import 'package:volpes/resources/custom_loader.dart';
 import 'package:volpes/resources/height_width.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../controllers/stores_controller.dart';
 import '../controllers/user_details_controller.dart';
 import '../models/dashboard_model.dart';
 import '../resources/common_texts_style.dart';
@@ -21,17 +22,19 @@ class StoreHomepage extends StatefulWidget {
 
 class _StoreHomepageState extends State<StoreHomepage> {
   final userDetailsController = Get.put(UserDetailsController());
+  final storeController = Get.put(StoreController());
   Repositories repositories = Repositories();
-  DashboradModel? dashboradModel;
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-  // DateTime? dateTime;
-  getDashboardData(){
-    repositories.getApi(url: ApiUrls.dashBoardUrl).then((value){
-       dashboradModel = DashboradModel.fromJson(jsonDecode(value));
-       // dateTime = DateTime.parse(dashboradModel!.success!.yearstartdate.toString());
-      setState(() {});
-    });
-  }
+  // DashboradModel? dashboradModel;
+  // final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  // // DateTime? dateTime;
+  // getDashboardData(){
+  //   repositories.getApi(url: ApiUrls.dashBoardUrl).then((value){
+  //      dashboradModel = DashboradModel.fromJson(jsonDecode(value));
+  //      // dateTime = DateTime.parse(dashboradModel!.success!.yearstartdate.toString());
+  //     setState(() {});
+  //   });
+  // }
+
   showAlertBox() {
     return showDialog(
         context: context,
@@ -98,7 +101,8 @@ class _StoreHomepageState extends State<StoreHomepage> {
   void initState() {
     super.initState();
     userDetailsController.getUserDetails();
-    getDashboardData();
+    storeController.getStoresDasboardData();
+    // getDashboardData();
     _instaFeedController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(
@@ -113,167 +117,201 @@ class _StoreHomepageState extends State<StoreHomepage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       body:
-          dashboradModel != null ?
-      SingleChildScrollView(
-        
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // userDetailsController.userRoles.value == "STORE" ? SizedBox():
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),              child: Image.asset(
-                "assets/images/store_logoo.jpeg",
-                fit: BoxFit.fitWidth,
-                height: height * .24,
-                width: width,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          Obx((){
+            // if (storeController.isDataLoading.value) {
+            //   return Center(child: threeArchedCircle(color: AppColors.primaryClr, size: 25));
+            // }
+            final dashboardData = storeController.dashboradModel.value.success;
+            if (dashboardData == null) {
+              return Center(child: Text("No dashboard data available"));
+            }
+            return
+              SingleChildScrollView(
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                            text: "TODAY'S SALES ",
+                  // userDetailsController.userRoles.value == "STORE" ? SizedBox():
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),              child: Image.asset(
+                    "assets/images/store_logoo.jpeg",
+                    fit: BoxFit.fitWidth,
+                    height: height * .24,
+                    width: width,
+                  ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // RichText(
+                        //     text: TextSpan(children: [
+                        //       TextSpan(
+                        //           text: "TODAY'S SALES ",
+                        //           style: Theme.of(context)
+                        //               .textTheme
+                        //               .titleSmall
+                        //               ?.copyWith(fontWeight: FontWeight.w700)),
+                        //       TextSpan(
+                        //           text: "(EX. VAT)",
+                        //           style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10)),
+                        //     ])),
+                        Text("Stores:",style: userText,),
+                        giveHeight(7),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: buildContainer(
+                                  // height: 85,
+                                  title:  "STORE TOTAL SALES (TODAY)",
+                                  data: formatter.format(((double.tryParse(storeController.dashboradModel.value.success!.storesales.toString() ?? "0") ?? 0))),
+                                  icon: Icons.store, width, clr: Colors.transparent),
+                            ),
+                            giveWidth(15),
+                            Expanded(
+                              child: buildContainer(
+                                  // height: 85,
+                                  title:  "STORE TOTAL SALES (YESTERDAY)",
+                                  data: formatter.format(((double.tryParse(storeController.dashboradModel.value.success!.storesalesyesterday.toString() ?? "0") ?? 0))),
+                                  icon: Icons.store, width, clr: Colors.transparent),
+                            ),
+
+                          ],
+                        ),
+                        giveHeight(15),
+                        Text("E-Commerce:",style: userText,),
+                        giveHeight(7),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: buildContainer(title: "CIF'S (TODAY)",
+                                  data: storeController.dashboradModel.value.success!.todaycif.toString(), icon: Icons.attach_money, width, clr: Colors.green),
+                            ),
+                            giveWidth(15),
+                            Expanded(
+                              child: buildContainer(title: "CIF'S (THIS MONTH)",
+                                  data: storeController.dashboradModel.value.success!.monthcif.toString(), icon: Icons.attach_money, width, clr: Colors.green),
+                            ),
+                          ],
+                        ),
+                        giveHeight(15),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Expanded(
+                        //       child: buildContainer(title: "TOTAL SALES",data:  formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
+                        //           (double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)
+                        //       ), icon: Icons.attach_money, width, clr: Colors.green),
+                        //     ),
+                        //    giveWidth(15),
+                        //     Expanded(
+                        //       child: buildContainer(title: "TOTAL ORDERS",
+                        //           data:  (dashboradModel!.success!.todaystoreorder!.cnt + dashboradModel!.success!.todayretailorder!.cnt).toString(), icon: Icons.list_alt_rounded, width, clr: Colors.green),
+                        //     ),
+                        //   ],
+                        // ),
+                        // giveHeight(15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: buildContainer(title:  "STORE SALES",data:
+
+                              formatter.format(((double.tryParse(storeController.dashboradModel.value.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)),
+                                  icon: Icons.store, width, clr: Colors.transparent),
+                            ),
+                            giveWidth(15),
+                            Expanded(
+                              child: buildContainer(title:  "STORE ORDER",data:
+
+                              storeController.dashboradModel.value.success!.todaystoreorder!.cnt!.toString(),
+                                  icon: Icons.store, width, clr: Colors.transparent),
+                            ),
+
+                          ],
+                        ),
+
+                        giveHeight(15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: buildContainer(title:  "TOTAL ORDERS (CURRENT MONTH)",data:
+
+                              storeController.dashboradModel.value.success!.mtdallorders!.cnt!.toString(),
+                                  icon: Icons.store, width, clr: Colors.transparent),
+                            ),
+
+
+                            giveWidth(15),
+                            Expanded(
+                              child: buildContainer(title:  "TOTAL SALES (CURRENT MONTH)",data:
+
+                              formatter.format(((double.tryParse(storeController.dashboradModel.value.success!.mtdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)),
+                                  icon: Icons.store, width, clr: Colors.transparent),
+                            ),
+
+                          ],
+                        ),
+                        giveHeight(15),
+
+                        Text("TOP QUIZ MEMBER",style: Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(fontWeight: FontWeight.w700)),
+                        giveHeight(5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: buildContainer(title: "TODAY",data: "DEVOPS", icon: Icons.attach_money, width, clr: Colors.green),
+                            ),
+                            giveWidth(15),
+                            Expanded(
+                              child: buildContainer(title: "THIS MONTH",data: "TESTER", icon: Icons.attach_money, width, clr: Colors.green),
+                            ),
+                          ],
+                        ),
+                        giveHeight(7),
+
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        Text(
+                            "#Volpes_sa",
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall
-                                ?.copyWith(fontWeight: FontWeight.w700)),
-                        TextSpan(
-                            text: "(EX. VAT)",
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 10)),
-                      ])),
-                  giveHeight(12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: buildContainer(title: "CIF'S (TODAY)",
-                            data: dashboradModel!.success!.todaycif.toString(), icon: Icons.attach_money, width, clr: Colors.green),
-                      ),
-                     giveWidth(15),
-                      Expanded(
-                        child: buildContainer(title: "CIF'S (THIS MONTH)",
-                            data: dashboradModel!.success!.monthcif.toString(), icon: Icons.attach_money, width, clr: Colors.green),
-                      ),
-                    ],
-                  ),
-                  giveHeight(15),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Expanded(
-                  //       child: buildContainer(title: "TOTAL SALES",data:  formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15 +
-                  //           (double.tryParse(dashboradModel!.success!.todayretailorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)
-                  //       ), icon: Icons.attach_money, width, clr: Colors.green),
-                  //     ),
-                  //    giveWidth(15),
-                  //     Expanded(
-                  //       child: buildContainer(title: "TOTAL ORDERS",
-                  //           data:  (dashboradModel!.success!.todaystoreorder!.cnt + dashboradModel!.success!.todayretailorder!.cnt).toString(), icon: Icons.list_alt_rounded, width, clr: Colors.green),
-                  //     ),
-                  //   ],
-                  // ),
-                  // giveHeight(15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: buildContainer(title:  "STORE SALES",data:
-
-                        formatter.format(((double.tryParse(dashboradModel!.success!.todaystoreorder!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)),
-                            icon: Icons.store, width, clr: Colors.transparent),
-                      ),
-                      giveWidth(15),
-                      Expanded(
-                        child: buildContainer(title:  "STORE ORDER",data:
-
-                        dashboradModel!.success!.todaystoreorder!.cnt!.toString(),
-                            icon: Icons.store, width, clr: Colors.transparent),
-                      ),
-
-                    ],
-                  ),
-                  giveHeight(15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: buildContainer(title:  "TOTAL ORDERS (CURRENT MONTH)",data:
-
-                        dashboradModel!.success!.mtdallorders!.cnt!.toString(),
-                            icon: Icons.store, width, clr: Colors.transparent),
-                      ),
-
-
-                      giveWidth(15),
-                      Expanded(
-                        child: buildContainer(title:  "TOTAL SALES (CURRENT MONTH)",data:
-
-                        formatter.format(((double.tryParse(dashboradModel!.success!.mtdallorders!.sumsubtotal?.toString() ?? "0") ?? 0) / 1.15)),
-                            icon: Icons.store, width, clr: Colors.transparent),
-                      ),
-
-                    ],
-                  ),
-                  giveHeight(15),
-
-                  Text("TOP QUIZ MEMBER",style: Theme.of(context)
-                      .textTheme
-                      .titleSmall
-                      ?.copyWith(fontWeight: FontWeight.w700)),
-                  giveHeight(5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: buildContainer(title: "TODAY",data: "DEVOPS", icon: Icons.attach_money, width, clr: Colors.green),
-                      ),
-                      giveWidth(15),
-                      Expanded(
-                        child: buildContainer(title: "THIS MONTH",data: "TESTER", icon: Icons.attach_money, width, clr: Colors.green),
-                      ),
-                    ],
-                  ),
-                  giveHeight(7),
+                                ?.copyWith(fontWeight: FontWeight.w600)
+                        ),
+                        giveHeight(4),
+                        SizedBox(
+                          height: 150,
+                          child: WebViewWidget(controller: _instaFeedController),
+                        ),
+                      ],
+                    ),
+                  )
 
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  Text(
-                    "#Volpes_sa",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(fontWeight: FontWeight.w600)
-                  ),
-                  giveHeight(4),
-                  SizedBox(
-                    height: 150,
-                    child: WebViewWidget(controller: _instaFeedController),
-                  ),
-                ],
-              ),
-            )
-
-          ],
-        ),
-      ):Center(child: threeArchedCircle(color: AppColors.primaryClr, size: 25)),
-    );
+            );
+          })
+       );
   }
 
-  Container buildContainer(double width, {required String title, required String data, required IconData icon,required Color? clr}) {
+  Container buildContainer(double width,  {required String title, required String data, required IconData icon,required Color? clr,}) {
     return Container(
-
                   padding:EdgeInsets.symmetric(horizontal: 10,vertical: 25),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -299,9 +337,9 @@ class _StoreHomepageState extends State<StoreHomepage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(title,style: textHeading.copyWith(fontSize: 9),),
+                      Text(title,textAlign:TextAlign.center,style: textHeading.copyWith(fontSize: 9),),
                       giveHeight(2),
-                      Text(data,style: userText,),
+                      Text(data,textAlign:TextAlign.center,style: userText,),
                       giveHeight(2),
                       // Icon(icon,size: 15,color: AppColors.primaryClr,),
 

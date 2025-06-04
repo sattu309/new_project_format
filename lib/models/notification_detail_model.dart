@@ -22,15 +22,15 @@ class NotificationDetailModel {
 }
 
 class Notifications {
-  int? id;
-  String? titletext;
-  String? bodytext;
-  String? image;
-  String? url;
-  int? storeId;
-  int? status;
-  int? createdBy;
-  String? createdAt;
+  dynamic id;
+  dynamic titletext;
+  dynamic bodytext;
+  dynamic image;
+  dynamic url;
+  dynamic storeId;
+  dynamic status;
+  dynamic createdBy;
+  dynamic createdAt;
 
   Notifications(
       {this.id,

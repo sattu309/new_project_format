@@ -5,6 +5,8 @@ import '../models/notification_model.dart';
 import '../models/stores_list.dart';
 import '../models/vm_section_List_model.dart';
 import '../resources/api_urls.dart';
+import '../models/dashboard_model.dart';
+
 
 class StoreController extends GetxController {
   RxString notiCount = "".obs;
@@ -12,6 +14,7 @@ class StoreController extends GetxController {
   var model = GetStoreListModel().obs;
   var notificationModel = NotificationListModel().obs;
   var vmSectionListModel = VmSectionListModel().obs;
+  var dashboradModel = DashboradModel().obs;
   final Repositories repository = Repositories();
 
   Future<void> getData() async {
@@ -48,6 +51,24 @@ class StoreController extends GetxController {
     } finally {
       isDataLoading(false);
     }
+  }
+  // stores data
+  Future<void> getStoresDasboardData() async {
+    print("From store data ");
+    try {
+      isDataLoading(true);
+      var response = await repository.getApi(url: ApiUrls.dashBoardUrl);
+      dashboradModel.value = DashboradModel.fromJson(jsonDecode(response));
+    } catch (e) {
+      print("Error fetching notification data: $e");
+    } finally {
+      isDataLoading(false);
+    }
+  }
+  @override
+  void onInit() {
+    super.onInit();
+    getStoresDasboardData();
   }
 
 }

@@ -46,4 +46,6 @@ class ApiUrls{
   static String getCartDataUrl = "${baseUrl}/getcartdata";
   static String getCheckoutSettingUrl = "${baseUrl}/checkoutsettings";
   static String placeOrderUrl = "${baseUrl}/processorder";
+  static String categoryListUrl = "${baseUrl}/getcommoncontent";
+  static String prodouctListUrl = "${baseUrl}/getproductlist";
 }

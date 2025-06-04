@@ -1,6 +1,4 @@
-import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:volpes/Resources/app_colors.dart';
@@ -9,20 +7,14 @@ import 'package:volpes/drawer_menu/admin%20menu%20files/sale_by_product.dart';
 import 'package:volpes/drawer_menu/admin%20menu%20files/sales_overview_page.dart';
 import 'package:volpes/drawer_menu/admin%20menu%20files/sales_payment_method.dart';
 import 'package:volpes/drawer_menu/admin%20menu%20files/tfg_moeny_page.dart';
-import 'package:volpes/drawer_menu/stores%20menu%20files/discount_page.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/feedback_form.dart';
-import 'package:volpes/drawer_menu/stores%20menu%20files/notification_screen.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/package_content_page.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/shop_screen.dart';
 import 'package:volpes/drawer_menu/stores%20menu%20files/store_menus_list.dart';
-import 'package:volpes/drawer_menu/stores%20menu%20files/stores_document_screen.dart';
-import 'package:volpes/resources/api_urls.dart';
-import 'package:volpes/resources/custom_loader.dart';
 import 'package:volpes/resources/height_width.dart';
 
 import '../controllers/main_controller.dart';
 import '../controllers/user_details_controller.dart';
-import '../models/admin_menu_category_list.dart';
 import '../resources/methods.dart';
 import 'stores menu files/vm_section.dart';
 import 'admin menu files/cc_furniture_rugs.dart';
@@ -47,14 +39,7 @@ class UserDrawer extends StatefulWidget {
 class _UserDrawerState extends State<UserDrawer> {
   final mainController = Get.put(MainHomeController());
   final userDetailsController = Get.put(UserDetailsController());
-  // Repositories repositories = Repositories();
-  // GetAdminMenuCategoryList? getAdminMenuCategoryList;
-  // getAdminMenuList(){
-  //   repositories.getApi(url: ApiUrls.adminMenuList).then((value){
-  //     getAdminMenuCategoryList = GetAdminMenuCategoryList.fromJson(jsonDecode(value));
-  //     setState(() {});
-  //   });
-  // }
+
   var drawerRoutes = [
     'Top 10 Retail Shoppers',
     'Top 10 Store Shoppers',
